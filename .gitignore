@@ -1,0 +1,96 @@
+# =========================
+# Runtime (machine-specific)
+# =========================
+# ops/ contains local-only tasks, absolute paths, device identifiers, personal pipelines.
+# It must never be pushed to remote.
+ops/
+_local/
+media/
+_out/
+_tmp/
+*.log
+*.wav
+.DS_Store
+scripts/novel/
+
+# =========================
+# Real configs (DO NOT TRACK)
+# =========================
+# Track only conf/*.example.*, keep real configs in ops/ or user home.
+**/*.conf
+# 白名单Exclude example/template configs from ignore:
+!conf/*.conf.example
+!conf/*.conf.template
+
+# If you use env files:
+**/.env
+!conf/.env.example
+
+# =========================
+# Artifacts / outputs
+# =========================
+logs/
+reports/
+tmp/
+.cache/
+changelog/_assets/
+changelog/_assets_raw/
+changelog/.last_slug
+changelog/_notes/
+
+# =========================
+# OS / editor noise
+# =========================
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Language / tooling caches (optional)
+# =========================
+node_modules/
+__pycache__/
+*.pyc
+# --- build / generated outputs ---
+_out/
+scripts/media/Lyrics/
+**/work_lyrics_*/
+**/*.full.wav
+**/wav/
+**/txt/
+**/segments.tsv
+**/silence.txt
+**/meta.txt
+
+# --- generated wrappers (if your bin is generated) ---
+bin/
+# --- outputs / runtime artifacts ---
+_out/
+_tmp/
+_local/
+*.log
+*.wav
+*.tmp
+.DS_Store
+
+# --- secrets / local configs ---
+conf/*.local
+conf/*local*
+conf/local.env
+conf/global.env
+conf/secrets*
+*.key
+*.pem
+.claude/settings.local.json
+.claude/*.local.*
+CLAUDE.local.md
+.worktrees/
+.local-backups/
+dajiang-globe-app/
+dajiang-globe-app/
+
+# Case Manager lifecycle files are local-only; support docs remain tracked
+/case-manager-app/cases/*/case.md
+/case-manager-app/cases/*/timeline.md
