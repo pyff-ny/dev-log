@@ -1,3 +1,6 @@
 # Feature 日志
 
 - 2026-08-20 [case-github-actions-fix-improve-bookmark — 发布说明](CASE-2026-062.md)
+- 2026-08-14 [Inbox 归档/删除按钮](CASE-2026-042.md)
+- 2026-08-12 [Goal DORA 概览](CASE-2026-024.md)
+- 2026-08-11 [Goal 活动热力条](CASE-2026-023.md)
