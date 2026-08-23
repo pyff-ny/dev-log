@@ -1,5 +1,6 @@
 # Improve 日志
 
+- 2026-08-23 [frame-note-improve-3 — 发布说明](CASE-2026-071.md)
 - 2026-08-22 [goal_spectrum-improve — 发布说明](CASE-2026-066.md)
 - 2026-08-22 [frame-note-improve-2 — 发布说明](CASE-2026-069.md)
 - 2026-08-21 [health-panel-multi-account — 发布说明](CASE-2026-065.md)
