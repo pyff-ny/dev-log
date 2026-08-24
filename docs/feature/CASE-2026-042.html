@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>case-manager_Inbox-archive-button — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-042", "title": "case-manager_Inbox-archive-button — 发布说明", "updated": "2026-08-14", "change_type": "feature"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>case-manager_Inbox-archive-button — 发布说明</h1>
+<p class="updated">更新: 2026-08-14</p>
+<p>版本 <code>v2.2.2.3</code>。Inbox tab 新增两个按钮：</p>
+<ul><li><strong>归档</strong>：<code>reviewing</code> 状态条目可见，点击后调用既有的 <code>saveIdeaReview("archived")</code> 路径（<code>POST /api/inbox/&lt;id&gt;/idea-review</code>，<code>conclusion: "archived"</code>），与 Idea Review tab 的归档效果完全一致。后端零改动。</li><li><strong>删除</strong>：<code>archived</code> 状态条目可见，点击后二次确认，调用新增的 <code>DELETE /api/inbox/&lt;id&gt;</code> 端点。服务端二次校验 <code>status == "archived"</code>，通过后永久删除整个条目目录（无回收站）。</li></ul>
+<p>调查确认用户最初报告的"重复 item"（<code>INBOX-2026-003</code>/<code>INBOX-2026-007</code> 标题相同）不是数据 bug，而是两条独立创建的真实条目；本次功能就是清理这类重复的工具。</p>
+<ul><li>功能 PR：<a href="https://github.com/pyff-ny/toolbox/pull/42">#42</a></li><li>功能 merge / source merge commit：<a href="https://github.com/pyff-ny/toolbox/commit/5f8c441"><code>5f8c441</code></a></li><li>快照：<code>releases/v2.2.2.3/</code></li></ul>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>
