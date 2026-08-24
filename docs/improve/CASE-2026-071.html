@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>frame-note-improve-3 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-071", "title": "frame-note-improve-3 — 发布说明", "updated": "2026-08-23", "change_type": "improve"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>frame-note-improve-3 — 发布说明</h1>
+<p class="updated">更新: 2026-08-23</p>
+<p>FrameNote（<code>apps/frame_note</code>，仍为 v1.7.0，本 Case 未改动 <code>VERSION</code>）。</p>
+<p>1. <strong>修复"刷新索引"两处根因</strong>：    - 删除原片后索引不清理：<code>/api/index/refresh</code> 新增可选 <code>apply_prune</code>（默认关闭，旧行为不变），apply 前先做安全范围校验（frame_note 自己的 <code>video_root</code> 只读扫描 vs <code>mk</code> 全局 dry-run 计数一致才允许清理），再对 <code>media.db</code> 做只读快照备份，最后调用既有的 <code>mk media db prune-missing --apply</code>。    - 刷新按钮本身此前一直静默失败：<code>mk media db refresh</code> 缺少非交互执行必需的 <code>--real</code>，导致 <code>exit_code=1</code>；已修复并加回归测试锁定。 2. <strong>新增"获取 IMDb 信息"按钮</strong>：接线此前已存在但从未在前端调用的 <code>/api/omdb/search</code>、<code>/api/omdb/confirm</code> 后端接口，无新增外部依赖。</p>
+<p>发布信息：</p>
+<ul><li>Repository: <code>pyff-ny/toolbox</code></li><li>PR: <a href="https://github.com/pyff-ny/toolbox/pull/135">#135</a>（<code>claude/frame-note-refresh-imdb-7c5cfd</code> → <code>develop</code>）</li><li>Merge commit: <code>755992f5b280a8869a89c80299722afab7936a4c</code></li><li>发布时间: 2026-08-23T18:22:17Z</li></ul>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>
