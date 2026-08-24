@@ -1,5 +1,6 @@
 # Feature 日志
 
+- 2026-08-23 [euro-travel-plan — 发布说明](CASE-2026-072.md)
 - 2026-08-23 [return-to-root — 发布说明](CASE-2026-070.md)
 - 2026-08-21 [mk-hub-serve-registry — 发布说明](CASE-2026-064.md)
 - 2026-08-21 [build-goal-spectrum — 发布说明](CASE-2026-061.md)
