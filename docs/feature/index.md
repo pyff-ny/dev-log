@@ -1,6 +1,7 @@
 # Feature 日志
 
 - 2026-08-24 [euro-travel-plan-3-autumn — 发布说明](CASE-2026-074.md)
+- 2026-08-24 [euro-travel-plan-4-winter — 发布说明](CASE-2026-075.md)
 - 2026-08-24 [euro-travel-plan-2-summer — 发布说明](CASE-2026-073.md)
 - 2026-08-23 [euro-travel-plan — 发布说明](CASE-2026-072.md)
 - 2026-08-23 [return-to-root — 发布说明](CASE-2026-070.md)
