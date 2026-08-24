@@ -41,14 +41,35 @@
     });
   }
 
+  // "全部" tab shows only the latest 10 entries by default; switching to a
+  // category filter always shows that category in full (no 10-item cap).
+  var COLLAPSE_COUNT = 10;
+  var showMoreBtn = document.getElementById("show-more");
+
+  function applyCollapse(collapsed) {
+    entries.forEach(function (el, i) {
+      el.style.display = collapsed && i >= COLLAPSE_COUNT ? "none" : "";
+    });
+    if (showMoreBtn) showMoreBtn.hidden = !collapsed;
+  }
+
+  if (showMoreBtn) {
+    applyCollapse(true);
+    showMoreBtn.addEventListener("click", function () {
+      applyCollapse(false);
+    });
+  }
+
   var filterButtons = document.querySelectorAll("[data-filter-btn]");
   filterButtons.forEach(function (btn) {
     btn.addEventListener("click", function () {
       var value = btn.dataset.filterBtn;
       if (value === "all") {
         document.body.removeAttribute("data-filter");
+        if (showMoreBtn) applyCollapse(true);
       } else {
         document.body.setAttribute("data-filter", value);
+        applyCollapse(false);
       }
       filterButtons.forEach(function (b) {
         b.classList.toggle("active", b === btn);
