@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Case Manager 清理历史与仓库维护 Tab — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-048", "title": "Case Manager 清理历史与仓库维护 Tab — 发布说明", "updated": "2026-08-16", "change_type": "feature", "sort_key": "2026-08-16T14:52:12-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>Case Manager 清理历史与仓库维护 Tab — 发布说明</h1>
+<p class="updated">更新: 2026-08-16</p>
+<p>Case Manager 新增「历史 / 清理」Tab：追踪 Case 关联的本地 branch、worktree、tag 和 commit，在发布证据、人工审核和二次确认全部通过后，才允许清理本地资源，并把命令、exit code 和结果追加写入 Case 自己的 <code>60-cleanup/cleanup-history.jsonl</code>。</p>
+<p>安全边界：写命令仅固定 argv allowlist（<code>git worktree remove &lt;validated-path&gt;</code>、<code>git branch -d &lt;validated-branch&gt;</code>）；不删除 tag、protected branch 或任何远端对象；无 shell 字符串拼接；<code>git branch -D</code>、<code>worktree remove --force</code>、<code>reset --hard</code>、<code>clean -fdx</code>、<code>update-ref -d</code>、<code>prune</code> 永久禁止。</p>
+<p>不新增数据库，不新增外部依赖，不改动既有接口与 JSON schema。</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

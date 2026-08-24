@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>health_panel 源码迁入 toolbox — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-053", "title": "health_panel 源码迁入 toolbox — 发布说明", "updated": "2026-08-17", "change_type": "improve", "sort_key": "2026-08-17T20:13:08-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>health_panel 源码迁入 toolbox — 发布说明</h1>
+<p class="updated">更新: 2026-08-17</p>
+<p>health_panel（v16.4.0 → v16.5.0）源码从独立仓库 <code>~/toolbox-data/health_panel/</code> 迁入 toolbox 单仓 <code>~/toolbox/apps/health_panel/</code>，与 <code>mk_hub</code> 等其余 <code>mk serve</code> app 的仓库惯例一致。</p>
+<ul><li><code>DATA_DIR</code>（进而 <code>BACKUP_DIR</code>）从源码目录外移到 <code>~/toolbox-data/health_panel/</code>，保证 toolbox 仓库内永不出现 <code>.db</code> 文件</li><li><code>DB_PATH</code>（<code>~/toolbox-data/db/health.db</code>）、<code>NOTES_DIR</code>（Obsidian 笔记）、端口 8630、全部 <code>/api/*</code> 端点、JSON schema、human output——<strong>零变化</strong></li><li>新增回归锁 <code>tests/test_data_paths.py</code>，防止未来再次出现数据路径混入源码目录</li></ul>
+<p><strong>发布计划分两段</strong>（本次 PR 只包含实现段，切换段单独发布）：</p>
+<p>| 段 | 内容 | 状态 | |---|---|---| | 实现段 | 源码入仓、路径常量重定向、回归锁测试 | 本 PR | | 切换段 | 备份数据物理迁移（T6）、<code>~/.mk_secrets/conf/capability_registry.tsv</code>（及休眠的 <code>serve_registry.tsv</code>）路径切换（T7）、<code>mk serve restart</code> 与切换后验收（T8） | PR 合并后单独授权执行 |</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

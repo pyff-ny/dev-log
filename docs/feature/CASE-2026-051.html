@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Case 流程清单（Process Checklist）子标签 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-051", "title": "Case 流程清单（Process Checklist）子标签 — 发布说明", "updated": "2026-08-17", "change_type": "feature", "sort_key": "2026-08-17T16:00:40-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>Case 流程清单（Process Checklist）子标签 — 发布说明</h1>
+<p class="updated">更新: 2026-08-17</p>
+<p>Case 详情页（活跃 <code>tab-cases</code> 与已归档 <code>tab-archive</code>）新增"状态推进 / 流程清单"子标签开关。"流程清单"渲染固定的 13 项 checklist，严格对应 <code>case-github-linkage-v1</code> §7，措辞顺序不变：</p>
+<ul><li>第 1-8 项（目标边界、Task Package、CHANGE_PLAN、文件触达范围、测试记录、FINAL_ACCEPTANCE、九份文档同步、timeline）直接复用已有的本地文档扫描数据。</li><li>第 9-13 项（commit / 分支已 push / PR 已创建并关联 / review 与 CI / merge commit 与 released 状态）实时查询本地 <code>git</code> 与 <code>gh</code>（只读子命令），不缓存、不落盘，也不解析 <code>case.md</code> 正文——继续延续 Git/GitHub 是代码交付真相、Case Manager 是流程真相这条既有边界。</li><li>一个 Case 对应多个 PR（feature PR、docs PR、promote PR 等）会全部列出，不只取第一个。</li><li>本仓库未配置强制 CI/review 时，第 12 项显示"不适用"，不会误报成"未完成"。</li><li>查询失败（未认证、网络问题、命令崩溃）时第 9-13 项显示"查询失败"并说明原因，第 1-8 项不受影响；确实没有匹配记录时显示"未完成"，两者不会混淆。</li></ul>
+<p>不新增数据库、不新增结构化字段存储 git/PR/tag 事实、不改动任何现有接口的字段名或语义。唯一新增的子进程调用是只读 <code>git</code>/<code>gh</code> 子命令（<code>git log --grep</code>、<code>git branch -r --contains</code>、<code>git remote get-url</code>、<code>gh pr list</code>、<code>gh pr view</code>），全部走参数数组、<code>shell=False</code>、5 秒超时，代码审查确认无写命令。</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

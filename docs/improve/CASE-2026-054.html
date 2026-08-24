@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>health_panel 源码迁入 toolbox_P2 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-054", "title": "health_panel 源码迁入 toolbox_P2 — 发布说明", "updated": "2026-08-18", "change_type": "improve", "sort_key": "2026-08-18T13:26:52-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>health_panel 源码迁入 toolbox_P2 — 发布说明</h1>
+<p class="updated">更新: 2026-08-18</p>
+<p>health_panel 服务正式切换到 toolbox 单仓代码（v16.5.0），完成 CASE-2026-053 遗留的切换段：</p>
+<ul><li>备份数据从旧仓库目录迁移到 <code>~/toolbox-data/health_panel/backups/</code></li><li><code>~/.mk_secrets/conf/capability_registry.tsv</code> 与 <code>serve_registry.tsv</code> 均切换到 <code>$HOME/toolbox/apps/health_panel</code></li><li><code>mk serve restart health_panel</code> 后服务读取新代码，API 契约与数据全部保持不变</li></ul>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

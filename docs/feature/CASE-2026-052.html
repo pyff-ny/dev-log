@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>check-design-docs-cli 闸门验证 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-052", "title": "check-design-docs-cli 闸门验证 — 发布说明", "updated": "2026-08-17", "change_type": "feature", "sort_key": "2026-08-17T17:12:48-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>check-design-docs-cli 闸门验证 — 发布说明</h1>
+<p class="updated">更新: 2026-08-17</p>
+<p>新增 <code>case-manager-app/src/check_design_docs.py</code> —— 一个只读命令行脚本，用于机械检查 某个 Case 的三份设计文档（<code>10-design/design.md</code>、<code>10-design/decisions.md</code>、 <code>20-plan/implementation-plan.md</code>）是否仍是未填写的模板占位符。</p>
+<p>配套新增 <code>case-manager-app/tests/test_check_design_docs.py</code>（7 个用例）。</p>
+<p>零修改任何既有文件：不改路由、UI、API、schema、exit code 语义，不新增依赖。 <code>change_class: C1</code>（纯 additive，行为安全）。</p>
+<p>设计上是薄封装：复用 App 已有的 <code>case_scanner.scan_cases()</code> / <code>Case.incomplete_fields</code> （底层即 <code>placeholder_check.py</code>），与 <code>workflow.py::can_advance()</code> 阶段推进闸门同源， 不重复实现检测规则，因此不会出现两套注册表互相漂移。</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>
