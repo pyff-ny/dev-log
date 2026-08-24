@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>统一注册管理mk cli和mk serve全部应用 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-010", "title": "统一注册管理mk cli和mk serve全部应用 — 发布说明", "updated": "2026-08-10", "change_type": "feature", "sort_key": "2026-08-10T21:24:03-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>统一注册管理mk cli和mk serve全部应用 — 发布说明</h1>
+<p class="updated">更新: 2026-08-10</p>
+<ul><li>统一 Registry v1 已登记 65 个 CLI 与 19 个 serve 应用。</li><li><code>mk serve</code>、嵌入式服务管理、<code>mk menu</code> 与 <code>mk guide</code> 已接入统一 Registry；<code>mk guide</code> 默认缺失 Registry 时返回 RC=4，不再回退旧 guide Registry。</li><li><code>mk_hub</code> 已展示“统一 Registry：65 个 CLI · 19 个服务”；其 API 仅返回 <code>id</code>、<code>type</code>、<code>title</code>、<code>status</code>、<code>tags</code>、<code>summary</code>、<code>port</code>，不返回路径或原始命令。</li><li>已合并代码 PR：<a href="https://github.com/pyff-ny/toolbox_ng/pull/1">toolbox_ng #1</a>；已合并 Case 文档 PR：<a href="https://github.com/pyff-ny/toolbox/pull/12">toolbox #12</a>。</li></ul>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

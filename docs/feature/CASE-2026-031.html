@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>跨 Case 依赖关系字段 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-031", "title": "跨 Case 依赖关系字段 — 发布说明", "updated": "2026-08-17", "change_type": "feature", "sort_key": "2026-08-18T23:08:12-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>跨 Case 依赖关系字段 — 发布说明</h1>
+<p class="updated">更新: 2026-08-17</p>
+<p>Case Manager 的 <code>case.md</code> 新增可选 frontmatter 字段 <code>blocked_by_case_ids</code>（逗号分隔的 Case ID 列表，如 <code>CASE-2026-012,CASE-2026-013</code>），用来单向声明"这个 Case 要等哪些 Case 先完成"。这条依赖关系只是可见提示，不做强制阻断、不做自动状态联动、不做循环依赖检测：</p>
+<ul><li>Case 详情页在有依赖未完成时显示 <code>⛔ 依赖未完成</code> badge，鼠标悬停能看到具体是哪些 Case 还没完成。</li><li>Goal 视图的"Case 链"列表里，每个 Case 卡片也会在优先级旗标旁边显示同样的 badge。</li><li>一个 Case 被视为"已完成"，等价于它已经 <code>archive</code>，或者已经进入 <code>release</code> 阶段且 <code>status</code> 是 <code>released</code>；引用了不存在的 Case ID 一律按"未完成"处理。</li></ul>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>新建 Case 弹窗支持选择 Goal 并自动计算 sequence — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-037", "title": "新建 Case 弹窗支持选择 Goal 并自动计算 sequence — 发布说明", "updated": "2026-08-12", "change_type": "improve", "sort_key": "2026-08-12T22:56:49-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>新建 Case 弹窗支持选择 Goal 并自动计算 sequence — 发布说明</h1>
+<p class="updated">更新: 2026-08-12</p>
+<p>"新建 Case" 弹窗新增一个可选的 Goal 下拉框；选中某个 Goal 后，创建时服务端会自动把该 Goal 下现有 case 的最大 <code>sequence</code> + 1 写入新 case 的 frontmatter，不再需要手动查询、计算 sequence。不选 Goal 时行为与改动前完全一致。</p>
+<p>分支 <code>claude/case-2026-037-377283</code> 已 push，PR <a href="https://github.com/pyff-ny/toolbox/pull/25">pyff-ny/toolbox#25</a> 已合并（merge commit <code>4669606</code>，2026-08-12），<code>main</code> 已包含本次改动。</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>
