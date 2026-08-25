@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>mk_io_focus_panel — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-058", "title": "mk_io_focus_panel — 发布说明", "updated": "2026-08-19", "change_type": "feature", "sort_key": "2026-08-19T06:33:58-04:00"}</script>
@@ -14,6 +14,6 @@
 <p>新增独立 <code>mk serve</code> app <code>io_focus_panel</code>（CASE-2026-058）：</p>
 <ul><li>单页面板，今日/本周/本月周期切换器驱动三区块联动</li><li>左：输入条目（类型/标题/备注/状态/标签）+ 快速添加</li><li>右：输出条目，同上字段</li><li>底：周/月目标条（可展开编辑）+ 日/周/月复盘文本框</li><li>后端：stdlib <code>http.server</code> + <code>sqlite3</code>，零外部依赖，三表 schema（entries/goals/feedback），SQLite 位于 <code>~/toolbox-data/io_focus_panel/data/io_focus.db</code></li><li>已注册进 <code>mk serve</code>（<code>capability_registry.tsv</code>，端口 8644）</li></ul>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

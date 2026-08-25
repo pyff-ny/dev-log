@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>health_panel 源码迁入 toolbox_P3 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-056", "title": "health_panel 源码迁入 toolbox_P3 — 发布说明", "updated": "2026-08-18", "change_type": "feature", "sort_key": "2026-08-18T18:57:45-04:00"}</script>
@@ -14,6 +14,6 @@
 <p>health_panel（v16.5.0 → v16.6.0）新增"就医记录"功能：</p>
 <ul><li>新表 <code>medical_visits</code>：日期、科室、医生/诊所、诊断、处方、下一步、备注</li><li><code>person</code> 字段区分 <code>self</code>（我）/<code>spouse</code>（老婆）——v1 只是数据标签，不是账户/权限隔离；现有 21 张既有表保持单用户不变</li><li>前端新增"就医记录"tab：录入表单、按人按科室的"上次就诊"摘要卡片、就诊列表、时间线视图</li><li>复用现有通用 CRUD 机制接入，未新写后端路由；通用编辑弹窗新增下拉选择字段支持（additive）</li></ul>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

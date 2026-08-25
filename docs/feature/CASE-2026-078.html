@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>virtual_travel_japan — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-078", "title": "virtual_travel_japan — 发布说明", "updated": "2026-08-24", "change_type": "feature", "sort_key": "2026-08-24T11:46:51-04:00"}</script>
@@ -14,6 +14,6 @@
 <p><code>virtual_travel</code> 新增国家 → 地区 → 季节的目的地入口框架：</p>
 <ul><li>新增 <code>apps/virtual_travel/content/destinations.json</code> destination registry，登记西班牙（available）与日本（planned，地区待定）。</li><li><code>/api/catalog</code> additive 新增 <code>destinations</code> 字段，旧 <code>items</code> 结构、默认 Spring、四季 Journey ID、未知 Journey 404 契约保持不变。</li><li>前端由单一季节选择框升级为国家/地区/季节三级选择器；选择日本进入诚实的"准备中"空态，不请求 <code>/api/journey</code>、不产生进度/书签/阅读关联写入。</li><li>Journey Pack 发现从硬编码西班牙路径泛化为通用国家/地区/季节目录发现，为后续国家扩展铺路，不改变西班牙四季内容本身。</li></ul>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

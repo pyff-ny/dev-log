@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>mk-hub-cross-app-badge-overview — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-026", "title": "mk-hub-cross-app-badge-overview — 发布说明", "updated": "2026-08-12", "change_type": "feature", "sort_key": "2026-08-12T12:22:30-04:00"}</script>
@@ -14,6 +14,6 @@
 <p>mk_hub 首页「服务入口」分类侧栏右侧的空白处，新增跨 app 徽标总览面板，试点 health_panel、daily_checkin：</p>
 <ul><li>health_panel（v16.3.0）、daily_checkin（v5_49_3）各自新增只读 <code>GET /api/badge</code>，返回体重记录新鲜度 / 今日打卡状态的 ok/warn/crit 三档信号。</li><li>mk_hub（v2.4.0）新增服务端聚合端点 <code>GET /api/badges</code>，前端每 10 秒轮询展示两张徽标卡片，点击直接跳转到对应 app；试点名单写死，任一 app 未启动/超时/返回异常数据都静默跳过，不影响其余内容或既有区块。</li></ul>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

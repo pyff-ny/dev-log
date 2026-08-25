@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>check-design-docs-cli 闸门验证 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-052", "title": "check-design-docs-cli 闸门验证 — 发布说明", "updated": "2026-08-17", "change_type": "feature", "sort_key": "2026-08-17T17:12:48-04:00"}</script>
@@ -16,6 +16,6 @@
 <p>零修改任何既有文件：不改路由、UI、API、schema、exit code 语义，不新增依赖。 <code>change_class: C1</code>（纯 additive，行为安全）。</p>
 <p>设计上是薄封装：复用 App 已有的 <code>case_scanner.scan_cases()</code> / <code>Case.incomplete_fields</code> （底层即 <code>placeholder_check.py</code>），与 <code>workflow.py::can_advance()</code> 阶段推进闸门同源， 不重复实现检测规则，因此不会出现两套注册表互相漂移。</p>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

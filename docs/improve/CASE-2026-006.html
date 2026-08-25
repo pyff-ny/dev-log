@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>case-manager-不同goal-id分组 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-006", "title": "case-manager-不同goal-id分组 — 发布说明", "updated": "2026-08-09", "change_type": "improve", "sort_key": "2026-08-09T19:12:11-04:00"}</script>
@@ -14,6 +14,6 @@
 <p>Case Manager 侧边栏的 Case 列表从扁平列表改为按 <code>goal_id</code> 分组： - 同一 Goal 下的连续 Case 聚在一起，按 <code>sequence</code> 排序，组标题显示 Goal 标题 + Case 数 - 每个 Goal 的分组标题带一个哈希取色的色点，跨刷新颜色稳定 - 分组可折叠，折叠状态存 <code>localStorage</code>（key 为 <code>goal_id</code>），默认展开 - 没有 <code>goal_id</code> 或匹配不到 Goal 的 Case 归入固定的"未关联 Goal"分组，排在最后 - 搜索/直接选中折叠分组内的 Case 时，该分组自动展开</p>
 <p>不改变数据 schema、后端 API、CLI 或退出码；纯前端展示层改动（C1）。</p>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

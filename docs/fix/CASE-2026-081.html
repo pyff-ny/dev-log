@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>return-to-root-fix-2 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-081", "title": "return-to-root-fix-2 — 发布说明", "updated": "2026-08-24T22:41:16-04:00", "change_type": "fix", "sort_key": "2026-08-24T22:41:16-04:00"}</script>
@@ -13,6 +13,6 @@
 <p class="updated"><span class="entry-case-id">CASE-2026-081</span> · 更新: 2026-08-24T22:41:16-04:00</p>
 <p>1. （fix）刷新/重启后，若当前 ROOT 存在尚未「回响」结束的 cycle，页面会主动询问「继续这一轮，还是开始新的一轮」；确认继续后自动恢复该 cycle 的支线与写作历史——不再默默新建 cycle 吞掉旧支线。 2. （improve）「当前 ROOT」页面从"MAIN/DEVELOP/待解/外部对谈全部同屏堆叠"改为单阶段聚焦：任意时刻只显示一个阶段的写作框，顶部常驻阶段流程条 <code>ROOT → MAIN → DEVELOP → 待解</code>，点击已到达的阶段可以跳回。FEATURE 支线在 DEVELOP 阶段内以可展开面板呈现（支持并列多条、可嵌套），进入=聚焦子视图，退出精确回到 DEVELOP。 3. （fix）顺带修复「回根」写作表单此前完全没有入口能进入的问题；现可从待解阶段底部「回根 →」进入。</p>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>

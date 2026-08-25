@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>idea-review-tab — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
 <script id="case-meta" type="application/json">{"case_id": "CASE-2026-009", "title": "idea-review-tab — 发布说明", "updated": "2026-08-10", "change_type": "feature", "sort_key": "2026-08-10T12:23:24-04:00"}</script>
@@ -14,6 +14,6 @@
 <p><code>case-manager-app</code>：</p>
 <ul><li>新增 Idea Review：Inbox 里 <code>reviewing</code> 状态的想法现在有真正的评审工作流——8 项结构化 checklist（不打分）+ 独立的 <code>idea_review_conclusion</code> 字段（<code>archived</code>/<code>candidate</code>/<code>promoted</code>），分别复用既有 <code>reviewing→archived</code>、<code>reviewing→cooling</code>、<code>mark_promoted</code> 转移，不新增状态、不改状态机。新增「Idea Review」Tab 汇总所有待评审条目。</li><li>新增「保存」按钮：checklist 可以先存草稿（不选结论、不改状态），不必一次填完。</li><li>Idea Review 的 checklist 答案在升格为 Case 时会预填进新 Case 的 <code>00-intake/requirements.md</code>，作为立项依据留存，不会因为 Inbox 条目变成 <code>promoted</code> 历史记录而丢失。</li><li>升格对话框新增 Goal 选择（此前一直硬编码落到 <code>GOAL-case-manager</code>），默认选中 <code>GOAL-capability-registry</code>。</li><li>Inbox 详情页精简：<code>归档</code>/<code>升格为 Case</code> 从 Inbox 详情页拿掉，只保留 <code>进入 cooling</code>/<code>进入 reviewing</code>，避免和 Idea Review 的功能重复；<code>reviewing</code> 状态改为提示去 Idea Review 完成评审。</li><li>顶部标签栏顺序调整为 <code>Goal → Inbox → Idea Review → Case → 日志 → 说明 → 笔记</code>。</li><li>修正 <code>GOAL-goal-capability-registry</code> 重复前缀 bug（应为 <code>GOAL-capability-registry</code>）。</li><li>新增 API：<code>POST /api/inbox/&lt;id&gt;/idea-review</code>。</li></ul>
 </article>
-<script src="../assets/site.js"></script>
+<script src="../assets/site.js?v=1b820c76"></script>
 </body>
 </html>
