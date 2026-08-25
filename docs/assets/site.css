@@ -64,6 +64,14 @@ body {
 }
 .heatmap-tip[hidden] { display: none; }
 
+.freq-wrap { margin: 0.25rem 0 1rem; }
+.freq-bars { display: block; }
+.freq-seg { cursor: pointer; }
+.freq-fix { fill: var(--badge-fix); }
+.freq-improve { fill: var(--badge-improve); }
+.freq-feature { fill: var(--badge-feature); }
+.freq-axis-label { font-size: 10px; fill: var(--muted); }
+
 .filters { display: flex; gap: 0.5rem; margin: 1rem 0 1.5rem; }
 .filters button {
   border: 1px solid var(--border);
