@@ -41,6 +41,40 @@
     });
   }
 
+  // Activity heatmap: instant custom tooltip (bigger font than native
+  // SVG <title>, no browser hover delay), positioned next to the cursor.
+  var heatmapCells = document.querySelectorAll(".heatmap rect");
+  if (heatmapCells.length) {
+    var tip = document.createElement("div");
+    tip.className = "heatmap-tip";
+    tip.hidden = true;
+    document.body.appendChild(tip);
+
+    function positionTip(event) {
+      var offset = 14;
+      var x = event.clientX + offset;
+      var y = event.clientY + offset;
+      var maxX = window.innerWidth - tip.offsetWidth - offset;
+      var maxY = window.innerHeight - tip.offsetHeight - offset;
+      tip.style.left = Math.min(x, Math.max(offset, maxX)) + "px";
+      tip.style.top = Math.min(y, Math.max(offset, maxY)) + "px";
+    }
+
+    heatmapCells.forEach(function (cell) {
+      cell.addEventListener("mouseenter", function (event) {
+        var date = cell.dataset.date;
+        var count = cell.dataset.count;
+        tip.textContent = date + "：" + count + " 条";
+        tip.hidden = false;
+        positionTip(event);
+      });
+      cell.addEventListener("mousemove", positionTip);
+      cell.addEventListener("mouseleave", function () {
+        tip.hidden = true;
+      });
+    });
+  }
+
   // "全部" tab shows only the latest 10 entries by default; switching to a
   // category filter always shows that category in full (no 10-item cap).
   var COLLAPSE_COUNT = 10;

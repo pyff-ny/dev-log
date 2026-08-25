@@ -49,6 +49,21 @@ body {
 .heat-l0 { fill: var(--heat-empty); }
 .heat-l1 { fill: var(--heat-filled); }
 
+.heatmap-tip {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .22);
+}
+.heatmap-tip[hidden] { display: none; }
+
 .filters { display: flex; gap: 0.5rem; margin: 1rem 0 1.5rem; }
 .filters button {
   border: 1px solid var(--border);
