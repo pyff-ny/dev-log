@@ -41,14 +41,18 @@
     });
   }
 
-  // Activity heatmap: instant custom tooltip (bigger font than native
-  // SVG <title>, no browser hover delay), positioned next to the cursor.
-  var heatmapCells = document.querySelectorAll(".heatmap rect");
-  if (heatmapCells.length) {
-    var tip = document.createElement("div");
-    tip.className = "heatmap-tip";
-    tip.hidden = true;
-    document.body.appendChild(tip);
+  // Shared instant tooltip (bigger font than native SVG <title>, no
+  // browser hover delay), positioned next to the cursor. Used by both the
+  // activity heatmap and the weekly fix/improve/feature stacked bars.
+  function initTooltip(elements, getText) {
+    if (!elements.length) return;
+    var tip = document.querySelector(".heatmap-tip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.className = "heatmap-tip";
+      tip.hidden = true;
+      document.body.appendChild(tip);
+    }
 
     function positionTip(event) {
       var offset = 14;
@@ -60,20 +64,25 @@
       tip.style.top = Math.min(y, Math.max(offset, maxY)) + "px";
     }
 
-    heatmapCells.forEach(function (cell) {
-      cell.addEventListener("mouseenter", function (event) {
-        var date = cell.dataset.date;
-        var count = cell.dataset.count;
-        tip.textContent = date + "：" + count + " 条";
+    elements.forEach(function (el) {
+      el.addEventListener("mouseenter", function (event) {
+        tip.textContent = getText(el);
         tip.hidden = false;
         positionTip(event);
       });
-      cell.addEventListener("mousemove", positionTip);
-      cell.addEventListener("mouseleave", function () {
+      el.addEventListener("mousemove", positionTip);
+      el.addEventListener("mouseleave", function () {
         tip.hidden = true;
       });
     });
   }
+
+  initTooltip(document.querySelectorAll(".heatmap rect"), function (cell) {
+    return cell.dataset.date + "：" + cell.dataset.count + " 条";
+  });
+  initTooltip(document.querySelectorAll(".freq-seg"), function (seg) {
+    return seg.dataset.tip;
+  });
 
   // "全部" tab shows only the latest 10 entries by default; switching to a
   // category filter always shows that category in full (no 10-item cap).
