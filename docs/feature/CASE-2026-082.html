@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>ming-dynasty-material — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-082", "title": "ming-dynasty-material — 发布说明", "updated": "2026-08-25T00:04:10-04:00", "change_type": "feature", "sort_key": "2026-08-25T00:04:10-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>ming-dynasty-material — 发布说明</h1>
+<p class="updated">更新: 2026-08-25T00:04:10-04:00</p>
+<p>case-2026-082 发布"历史认知基础设施"Goal 下的 Case 2：材料底图与主题工作台。新建 <code>mk serve</code> app <code>hist_cognition</code>（端口 8649）：</p>
+<ul><li>材料登记：标题/来源类型/出处定位（必填）/摘录</li><li>主题登记：名称/说明，与材料多对多关联</li><li>主题详情页查看/添加/移除关联材料</li><li>主题级"主流解释"（多频）与"我的理解"（基频）并排对比，另有两个独立顶层 Tab 可跨主题浏览编辑（ADR-0004，评审前 CHANGE 追加）</li></ul>
+<p>纯 stdlib 实现，无新增依赖；不改动 mk reading、bournebrain 或任何既有 app/命令。</p>
+</article>
+<script src="../assets/site.js"></script>
+</body>
+</html>
