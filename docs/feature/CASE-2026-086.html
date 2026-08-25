@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-086", "title": "frame-note-improve-5 — 发布说明", "updated": "2026-08-25", "change_type": "feature", "sort_key": "2026-08-25"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-086", "title": "frame-note-improve-5 — 发布说明", "updated": "2026-08-25T18:53:21-04:00", "change_type": "feature", "sort_key": "2026-08-25T18:53:21-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>frame-note-improve-5 — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-086</span> · 更新: 2026-08-25</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-086</span> · 更新: 2026-08-25T18:53:21-04:00</p>
 <p>Case Manager 新增"一键归档"批量操作：<code>POST /api/cases/bulk-archive</code>。一次性把所有满足既有归档前置条件（<code>current_stage: release</code> 且 <code>status: released</code> 且已有 <code>released_at</code>）的 Case 推进到 <code>archive</code>，无需逐个手动操作。服务端完全复用既有单 Case 归档校验与签名事件写入逻辑，单个 Case 失败会被跳过并报告原因，不影响其余 Case。前端在存在可归档 Case 时显示"📦 一键归档"按钮，点击后弹出确认弹窗列出目标 Case ID。</p>
 </article>
 <script src="../assets/site.js?v=1b820c76"></script>
