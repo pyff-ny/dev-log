@@ -11,6 +11,21 @@
   --badge-feature: #1d4f9c;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --text: #e8e8e8;
+    --muted: #9a9a9a;
+    --border: #2e3136;
+    --accent: #4caf7d;
+    --heat-empty: #2a2d31;
+    --heat-filled: #4caf7d;
+    --badge-fix: #d9603a;
+    --badge-improve: #4caf7d;
+    --badge-feature: #5b8fd6;
+  }
+}
+
 * { box-sizing: border-box; }
 
 body {
