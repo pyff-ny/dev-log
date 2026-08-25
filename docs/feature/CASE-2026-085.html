@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>frame-note-improve-4 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-085", "title": "frame-note-improve-4 — 发布说明", "updated": "2026-08-25T12:14:53-04:00", "change_type": "feature", "sort_key": "2026-08-25T12:14:53-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>frame-note-improve-4 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-085</span> · 更新: 2026-08-25T12:14:53-04:00</p>
+<p>- 新增第三个只读内容根目录 <code>music_root</code>（默认   <code>/Volumes/iMac_HDD_Backup/Media/music</code>），沿用既有 <code>symphony_root</code>   的接入模式：可通过 <code>--music-root</code> / <code>FRAME_NOTE_MUSIC_ROOT</code> 覆盖。 - 设置tab新增"关联数据库目录"展示区，显示 <code>video_root</code>（可编辑，行为   不变）、<code>symphony_root</code>、<code>music_root</code> 三者的路径与挂载状态——此前   设置tab完全不显示 symphony 的信息。 - 影片库筛选新增"音乐"选项，music_root 下已索引的 mp4 内容可在播放tab   直接浏览、播放（不经过转码）。 - 修复：<code>MediaCatalog</code> 识别 music 库归属的三处（SQL WHERE、   <code>LIBRARY_COLUMN</code> 标签、<code>resolve_original</code> 路径解析）现在统一使用   大小写敏感匹配，避免与数据库里一份无关的大写 <code>Music/...</code> 历史合集   发生前缀碰撞（详见 <code>10-design/decisions.md</code> ADR-0001）。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
