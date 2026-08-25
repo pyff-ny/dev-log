@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>return-to-root — 发布说明</h1>
-<p class="updated">更新: 2026-08-23</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-070</span> · 更新: 2026-08-23</p>
 <p>新增本地 App <code>return_to_root</code>（回根，v1.0.0）：writing-first 的自主写作与认知回响工具。支持生根、扎根、单一当前 ROOT、MAIN/DEVELOP/FEATURE 多层分支、外部 AI 对谈门禁（仅经 external 入口保存，需形成“我的重新理解”后才能进入主线）、离开/回归的显式留痕、以及不可覆盖的回响。第一版不内嵌任何 AI/API，默认仅监听 <code>127.0.0.1</code>，使用独立 SQLite SSOT，通过 <code>mk serve</code> 正式生命周期管理（端口 8647）。</p>
 <p>发布过程中修复两处缺陷：(1) <code>serve.py</code> 原硬编码 <code>VERSION = "0.1.0"</code>，现改为读取 <code>VERSION</code> 文件（PR #138）；(2) <code>serve.py</code> 从未实现 <code>/</code> 与 <code>/static/*</code> 路由，浏览器打开首页只会得到 404，前端从未真正可用——已补上并对齐 <code>frame_note</code> 的静态文件服务约定，同时把路径穿越校验根收紧到 <code>static/</code> 子目录，避免 <code>/static/../serve.py</code> 泄漏源码（PR #139）。</p>
 <p>新增 App 图标（PR #140）：种子/根点配三条分叉主根的 line-art glyph，直接呼应"回根"；glyph 色 <code>#d2a07f</code> 取自 App 自身暗色模式的 <code>--accent</code>，与站内实际强调色同源。按 <code>mk-serve-app-design</code> 技能规格设计（90 单位画布，瓦片内缩 <code>x=8.09 y=8.09 w=73.82 h=73.82 rx=16.4</code>，512×512 导出瓦片包围盒校验 <code>420x420+46+46</code>），通过 <code>apply_icons.py</code> 注入为 favicon，不与既有 10 个 App 图标配色重复。</p>

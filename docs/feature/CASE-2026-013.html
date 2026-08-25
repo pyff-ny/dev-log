@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>Manual Promote Contract and WIP Guidance — 发布说明</h1>
-<p class="updated">更新: 2026-08-17</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-013</span> · 更新: 2026-08-17</p>
 <p>两部分：</p>
 <p>1. <strong>补记历史实现</strong>（实际已于 2026-08-13 上线，本次只是把它正式关联到 CASE-2026-013）：Inbox→Case Promote、Reviewing 转移在容量满载时阻断（<code>409</code>），仅 <code>intent=fix</code> 可提交带 <code>reason/impact/owner/recovery_at</code> 四项的紧急例外，记为"认知债务"。 2. <strong>本次新增</strong>：三个容量上限（Reviewing / 进行中实施 Case / 沉淀草稿）从硬编码常量改为可在 Idea Review 页面直接编辑的配置，每次调整自动记录旧值、新值、时间。新增 <code>GET</code>/<code>POST /api/capacity-config</code> 两个 API，<code>capacity_config.json</code> 为新的持久化存储位置。</p>
 </article>

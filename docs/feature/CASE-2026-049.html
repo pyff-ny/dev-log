@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>跨源语义关联层（知识结晶中心 P0-A） — 发布说明</h1>
-<p class="updated">更新: 2026-08-17</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-049</span> · 更新: 2026-08-17</p>
 <p><code>mk troubleshooting</code> app（<code>~/toolbox-data/mk_troubleshooting</code>）新增「🔗 关联」：跨源 （TR 正式库、隔离区、Case Manager 沉淀草稿、Obsidian <code>projects</code>）发现语义相关的条目 并并置呈现，目标是减少知识碎片化、让相关笔记互相被看见。</p>
 <p>不搬迁、不合并任何现有数据 store；关联缓存是纯派生物，删除后重新同步即可重建，不 损失任何事实。</p>
 <p><strong>架构</strong>：数据只读（TR/隔离/沉淀/Obsidian）→ 分析层在 iMac 上用独立 venv（<code>bge-large-zh-v1.5</code>） 离线计算 → 显示层（本 app）零依赖只读缓存。MacBook 上运行的 <code>serve.py</code> 全程不 import torch/sentence-transformers/numpy，不发起任何网络请求。</p>

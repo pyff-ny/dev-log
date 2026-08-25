@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>case-manager_goal_id_入口_tab — 发布说明</h1>
-<p class="updated">更新: 2026-08-09</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-007</span> · 更新: 2026-08-09</p>
 <p>给 Case Manager 加了顶级 tab 导航：📁 Case（原有功能，行为不变）、🎯 Goal（新建+查看）、📜 日志、📖 说明、📓 笔记。</p>
 <ul><li><strong>Goal</strong>：新建只填标题，<code>goal_id</code> 自动从标题派生（冲突自动加数字后缀），不再需要手填 ID——CASE-2026-006 那次"手填 goal_id 打字错误导致侧边栏全部 Case 消失"的问题从入口上被消掉了。Goal 详情显示它的 Case 链（按 <code>sequence</code> 排序）和 <code>goal.md</code> 原文。</li><li><strong>日志</strong>：直接在 App 里看 <code>case_manager</code> 自己的运行日志（真实路径 <code>~/toolbox-data/mk_out/serve/case_manager.log</code>，不是新建的日志），支持关键词过滤和可选自动刷新，<code>ACTION:</code> 操作记录会高亮。</li><li><strong>说明</strong>：App 内直接看 <code>README.md</code>，标题层级会渲染成真正的标题，顶部有"在 VS Code 中打开"的深链接。</li><li><strong>笔记</strong>：观察笔记存到 Obsidian（<code>/Users/jiali/Obsidian/projects/case_manager/30_notes/</code>），折叠式列表、点开看正文、支持删除（删除前会弹确认）。</li></ul>
 <p>不改变任何现有 <code>/api/cases</code>、<code>/api/documents/*</code>、<code>GET /api/goals</code> 的行为；新增的 5 组接口都是纯增量。</p>

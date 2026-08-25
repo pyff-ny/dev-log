@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>check-design-docs-cli 闸门验证 — 发布说明</h1>
-<p class="updated">更新: 2026-08-17</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-052</span> · 更新: 2026-08-17</p>
 <p>新增 <code>case-manager-app/src/check_design_docs.py</code> —— 一个只读命令行脚本，用于机械检查 某个 Case 的三份设计文档（<code>10-design/design.md</code>、<code>10-design/decisions.md</code>、 <code>20-plan/implementation-plan.md</code>）是否仍是未填写的模板占位符。</p>
 <p>配套新增 <code>case-manager-app/tests/test_check_design_docs.py</code>（7 个用例）。</p>
 <p>零修改任何既有文件：不改路由、UI、API、schema、exit code 语义，不新增依赖。 <code>change_class: C1</code>（纯 additive，行为安全）。</p>

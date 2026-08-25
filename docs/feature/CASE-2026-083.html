@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-083", "title": "ming-dynasty-case-3 — 发布说明", "updated": "2026-08-25", "change_type": "feature", "sort_key": "2026-08-25"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-083", "title": "ming-dynasty-case-3 — 发布说明", "updated": "2026-08-25", "change_type": "feature", "sort_key": "2026-08-25T01:02:43-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>ming-dynasty-case-3 — 发布说明</h1>
-<p class="updated">更新: 2026-08-25</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-083</span> · 更新: 2026-08-25</p>
 <p><code>hist_cognition</code>（历史认知基础设施 Case 3：证据回廊）v1.0.0 → v1.1.0：</p>
 <ul><li>新增"主张"（claim）机制：把主题下的论述分为事实/观点/推断/待核验四类，每条主张必须挂一个来源材料</li><li>支持给主张关联零到多个反证材料，选中未关联到当前主题的材料时自动补建 <code>material_topics</code> 关联</li><li>主张支持完整编辑（正文/分类/来源/反证）与删除，跟 Case 2 材料/主题的增删-only 模式不同</li><li>UI 入口在主题详情页内新增"主张"区块，"待核验"用虚线边框视觉区分，避免被误读为事实；同一主题下互相冲突的主张并列展示，不强制消解</li><li><code>materials</code>/<code>topics</code>/<code>material_topics</code> 三张已发布表结构和数据零改动</li></ul>
 </article>

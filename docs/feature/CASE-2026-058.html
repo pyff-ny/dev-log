@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>mk_io_focus_panel — 发布说明</h1>
-<p class="updated">更新: 2026-08-19</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-058</span> · 更新: 2026-08-19</p>
 <p>新增独立 <code>mk serve</code> app <code>io_focus_panel</code>（CASE-2026-058）：</p>
 <ul><li>单页面板，今日/本周/本月周期切换器驱动三区块联动</li><li>左：输入条目（类型/标题/备注/状态/标签）+ 快速添加</li><li>右：输出条目，同上字段</li><li>底：周/月目标条（可展开编辑）+ 日/周/月复盘文本框</li><li>后端：stdlib <code>http.server</code> + <code>sqlite3</code>，零外部依赖，三表 schema（entries/goals/feedback），SQLite 位于 <code>~/toolbox-data/io_focus_panel/data/io_focus.db</code></li><li>已注册进 <code>mk serve</code>（<code>capability_registry.tsv</code>，端口 8644）</li></ul>
 </article>

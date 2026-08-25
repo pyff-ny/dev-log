@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>case-github-actions-fix-improve-bookmark — 发布说明</h1>
-<p class="updated">更新: 2026-08-20</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-062</span> · 更新: 2026-08-20</p>
 <p>新增 fix/improve/feature 发布日志的自动同步：<code>develop</code> 上 <code>status: released</code> 的 release-notes.md 会按 <code>change_type</code> 分类，渲染成 case 页面与索引并同步到 <code>pyff-ny/dev-log</code>（GitHub Pages）。复用 <code>markdown_parser.py</code>，无新增外部依赖；支持一次 push 多文件的幂等同步。</p>
 </article>
 <script src="../assets/site.js"></script>

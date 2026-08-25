@@ -10,7 +10,7 @@
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>agent_分工 — 发布说明</h1>
-<p class="updated">更新: 2026-08-20</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-060</span> · 更新: 2026-08-20</p>
 <ul><li>Codex 主 Agent runtime 默认：<code>gpt-5.6-sol</code>，reasoning effort <code>high</code>。</li><li>普通子 Agent runtime 默认：<code>gpt-5.6-luna</code>，reasoning effort <code>medium</code>。</li><li>Multi-agent 显式启用，并发上限 3。</li><li><code>AGENTS.md</code> 新增条件式 Agent Orchestration：至少两个独立、边界清晰的子任务才委派；Sol 独占审批、范围、冲突整合和最终 verdict。</li><li>新增八字段 task contract、六字段 result schema、禁止递归创建 Agent及一次 transient retry 上限。</li><li><code>sync.sh</code> 现在以 SSOT 管理模型路由，保留非管理配置，提供 deterministic backup manifest、目标本地原子替换及 bundle rollback。</li><li>修复 SIGINT 分类优先级和合法缩进 TOML canonicalization。</li></ul>
 </article>
 <script src="../assets/site.js"></script>
