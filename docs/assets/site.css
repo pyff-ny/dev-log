@@ -5,7 +5,10 @@
   --border: #e2e2e2;
   --accent: #1d6f42;
   --heat-empty: #ebedf0;
-  --heat-filled: #1d6f42;
+  --heat-l1: #9be9a8;
+  --heat-l2: #40c463;
+  --heat-l3: #30a14e;
+  --heat-l4: #216e39;
   --badge-fix: #b23c17;
   --badge-improve: #1d6f42;
   --badge-feature: #1d4f9c;
@@ -19,7 +22,10 @@
     --border: #2e3136;
     --accent: #4caf7d;
     --heat-empty: #2a2d31;
-    --heat-filled: #4caf7d;
+    --heat-l1: #0e4429;
+    --heat-l2: #006d32;
+    --heat-l3: #26a641;
+    --heat-l4: #39d353;
     --badge-fix: #d9603a;
     --badge-improve: #4caf7d;
     --badge-feature: #5b8fd6;
@@ -47,7 +53,10 @@ body {
 
 .heatmap { display: block; margin: 1rem 0; }
 .heat-l0 { fill: var(--heat-empty); }
-.heat-l1 { fill: var(--heat-filled); }
+.heat-l1 { fill: var(--heat-l1); }
+.heat-l2 { fill: var(--heat-l2); }
+.heat-l3 { fill: var(--heat-l3); }
+.heat-l4 { fill: var(--heat-l4); }
 
 .heatmap-tip {
   position: fixed;
