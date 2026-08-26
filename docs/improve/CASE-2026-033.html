@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>沉淀草稿与 mk troubleshooting 的 Schema 契约测试 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-033", "title": "沉淀草稿与 mk troubleshooting 的 Schema 契约测试 — 发布说明", "updated": "2026-08-25T19:58:14-04:00", "change_type": "improve", "sort_key": "2026-08-25T19:58:14-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>沉淀草稿与 mk troubleshooting 的 Schema 契约测试 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-033</span> · 更新: 2026-08-25T19:58:14-04:00</p>
+<p>新增一份跨仓 schema 契约测试：<code>case-manager-app/tests/test_distillation_troubleshooting_contract.py</code>。它证明并锁定了 <code>_distill_case</code>（case-manager-app 生成沉淀草稿）与 <code>parse_incident_fragment</code>（toolbox_v2/apps/myk 的 <code>mk troubleshooting new --from</code> 解析逻辑）之间的字段契约：</p>
+<ul><li>用真实生成的草稿跑通真实的解析逻辑（经测试内桥接，不改任何生产代码）。</li><li>锁定 <code>_distill_case</code> 的 frontmatter key 集合与 myk 的 <code>SECTION_FIELDS</code> 7 段标签顺序——任一边改名会让对应测试带清晰错误信息失败。</li><li>字段映射说明本身作为测试文件的 module docstring 存在，与验证代码放在一起。</li></ul>
+<p>不改变任何一边现有的字段命名、CLI 行为或 schema；不新增生产转换层。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
