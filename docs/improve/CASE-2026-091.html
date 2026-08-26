@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>note-vault-tab-design — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-091", "title": "note-vault-tab-design — 发布说明", "updated": "2026-08-26T18:51:12Z", "change_type": "improve", "sort_key": "2026-08-26T18:51:12Z"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>note-vault-tab-design — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-091</span> · 更新: 2026-08-26T18:51:12Z</p>
+<p>note_vault 界面从单页拆成两个 tab：「录入」只保留粘贴/保存的最短路径（textarea + 标签输入 + 保存按钮 + 已存标签 chip 辅助输入），去掉了原来挤在同一页面的搜索框和条目列表；新增「笔记」tab， 左栏是可在"按时间"/"按标签"两种分组视图间切换的折叠列表（按时间：今天/昨天/本周/本月默认平铺、 更早按自然月默认折叠；按标签：每个标签默认折叠、显示计数、多标签条目在每个所属分组下都出现； 同一分组内多条记录复用"折叠到最新"），右栏显示选中条目的完整内容并可编辑/删除。纯前端改动， 不改后端 API、schema 或 <code>serve.py</code>。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
