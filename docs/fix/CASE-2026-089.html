@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>dev-log-timestamp — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-089", "title": "dev-log-timestamp — 发布说明", "updated": "2026-08-26T12:51:37-04:00", "change_type": "fix", "sort_key": "2026-08-26T12:51:37-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>dev-log-timestamp — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-089</span> · 更新: 2026-08-26T12:51:37-04:00</p>
+<p>修复 dev-log 上部分已发布 case 的显示问题。根因：<code>case-manager-app</code> 的"标记发布"动作要给 <code>release-notes.md</code> 盖上 <code>status: released</code> + 精确时间戳，但只有在点击发布那一刻这份文件已经 存在时才会触发；文件内容如果是点击发布之后才补全的，这次盖章就不会发生。</p>
+<p>排查后发现影响范围比最初以为的大：83 个已发布 case 里，74 个时间只显示到日期没有具体时间， 其中 46 个更严重——<code>release-notes.md</code> 自己的 <code>status</code> 字段根本没变成 <code>released</code>，这些条目很可能 从未在 dev-log 上出现过。</p>
+<p>给 <code>.github/scripts/sync_fix_improve_log.py</code> 加了一个可复用的 <code>--repair-release-metadata</code> 模式， 从每个 case 自己的 <code>case.md</code>（App 维护、权威但不进 git）回填 <code>release-notes.md</code> 的 <code>status</code> 和 <code>updated</code> 字段，跑了一次修复全部 83 个 case（74 个实际有改动，9 个本来就对）。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
