@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>dev-log-release-sync-reliability — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-090", "title": "dev-log-release-sync-reliability — 发布说明", "updated": "2026-08-26T13:32:30-04:00", "change_type": "improve", "sort_key": "2026-08-26T13:32:30-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>dev-log-release-sync-reliability — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-090</span> · 更新: 2026-08-26T13:32:30-04:00</p>
+<p>CASE-2026-089 修复时发现:<code>release-notes.md</code> 推送到 <code>develop</code> 后,现有 <code>.github/workflows/sync-fix-improve-log.yml</code>(仅按 push 事件的 diff 触发)有可能悄悄不触发——三个改动了该 case release-notes.md 的提交推送后,全仓库 workflow 运行记录里完全没有对应的一次运行,靠人工肉眼发现、手动造一次空提交才补触发。</p>
+<p>新增 <code>.github/workflows/reconcile-dev-log-sync.yml</code>,与现有 workflow 并存、零改动:</p>
+<ul><li>每日定时 + 手动 <code>workflow_dispatch</code>(<code>mode: alert|repair</code>,默认 <code>alert</code>),对<strong>全部</strong> <code>case-manager-app/cases/*/50-release/release-notes.md</code> 重新跑一遍现有(未改动)的 <code>sync_fix_improve_log.py</code>,而不是只看这一次 push 的 diff。</li><li><code>alert</code> 模式(默认,含所有定时运行):检测到漂移就让 job 失败并打印摘要,不写入真实 dev-log。</li><li><code>repair</code> 模式(仅限人工显式 dispatch):检测到漂移时,复用与 <code>sync-fix-improve-log.yml</code> 完全相同的 commit/push/PR/squash-merge 流程写入 dev-log。</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
