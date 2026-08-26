@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>重设计 mk troubleshooting：个人系统汇聚与故障排查中心 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-022", "title": "重设计 mk troubleshooting：个人系统汇聚与故障排查中心 — 发布说明", "updated": "2026-08-11", "change_type": "feature", "sort_key": "2026-08-11T21:44:11-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-022", "title": "重设计 mk troubleshooting：个人系统汇聚与故障排查中心 — 发布说明", "updated": "2026-08-11T21:44:11-04:00", "change_type": "feature", "sort_key": "2026-08-11T21:44:11-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>重设计 mk troubleshooting：个人系统汇聚与故障排查中心 — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-022</span> · 更新: 2026-08-11</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-022</span> · 更新: 2026-08-11T21:44:11-04:00</p>
 <p>mk_troubleshooting 重设计，三个 Slice，两个 PR：</p>
 <ul><li><strong>PR</strong> <a href="https://github.com/pyff-ny/toolbox_ng/pull/2">pyff-ny/toolbox_ng#2</a>（<code>toolbox_v2</code> 仓库，<code>codex/mk-troubleshooting-source-case-ids</code> → <code>toolbox-v2</code>）</li><li>Slice 1：<code>core/troubleshooting/</code> 新增可选、additive 的 <code>source_case_ids</code> 字段（model 校验 → storage 往返 → <code>--source-case-ids</code> CLI flag → mk_troubleshooting <code>POST /api/topics</code> 透传），不改任何既有字段/路由/退出码语义。</li><li>Slice 2：mk_troubleshooting 前端（<code>toolbox-data/mk_troubleshooting</code>，非 git，不在这个 PR 的 diff 里）重做为悬浮分类抽屉 + 总览侧栏，纯前端，复用全部既有 API。</li><li><strong>PR</strong> <a href="https://github.com/pyff-ny/toolbox/pull/17">pyff-ny/toolbox#17</a>（<code>toolbox</code> 仓库，<code>codex/case-manager-distillation-slice3</code> → <code>main</code>）</li><li>Slice 3：case-manager-app 新增"沉淀"按钮 + tab + <code>distillations/</code> 目录；mk_troubleshooting（同上，非 git）"待确认"分类接上真实数据源，支持接受/拒绝。</li></ul>
 </article>

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>Git Handoff for Approved Cases — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-014", "title": "Git Handoff for Approved Cases — 发布说明", "updated": "2026-08-19", "change_type": "feature", "sort_key": "2026-08-19T00:43:24-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-014", "title": "Git Handoff for Approved Cases — 发布说明", "updated": "2026-08-19T00:43:24-04:00", "change_type": "feature", "sort_key": "2026-08-19T00:43:24-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>Git Handoff for Approved Cases — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-014</span> · 更新: 2026-08-19</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-014</span> · 更新: 2026-08-19T00:43:24-04:00</p>
 <p>Case 进入 <code>release</code> 阶段（评审已过、等待/记录发布交付）后，Case 详情页新增 "Git Handoff" 面板：</p>
 <p>1. 只读展示建议的分支名（<code>claude/&lt;slug(标题)&gt;-&lt;确定性 6 位哈希&gt;</code>）与仓库 URL（从本地 <code>git remote get-url origin</code> 只读探测），并列出依赖阻塞项中尚未发布的风险提示。 2. Jia 点击"确认 Git handoff"后，记录一条可审计的 timeline 事件（不改 <code>case.md</code>），随后展示回填表单。 3. Jia 手动创建分支/PR/merge 后，回到面板填写仓库、分支、PR 编号、PR 链接、merge commit，提交后写入 <code>case.md</code> <strong>正文</strong>"当前状态"小节与 <code>changelog.md</code>，作为交付证据留痕。</p>
 <p>不做：不自动 <code>push</code>、不自动开 PR、不根据评分或任何自动化触发 Git 操作——分支创建、commit、push、PR 全部由 Jia 手动完成。</p>

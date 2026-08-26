@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>dev-log-legacy — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-080", "title": "dev-log-legacy — 发布说明", "updated": "2026-08-24", "change_type": "fix", "sort_key": "2026-08-24T16:47:30-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-080", "title": "dev-log-legacy — 发布说明", "updated": "2026-08-24T16:47:30-04:00", "change_type": "fix", "sort_key": "2026-08-24T16:47:30-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>dev-log-legacy — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-080</span> · 更新: 2026-08-24</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-080</span> · 更新: 2026-08-24T16:47:30-04:00</p>
 <p>补齐 49 个历史 <code>status: released</code> case 的 <code>release-notes.md</code> 缺失/无效 <code>change_type</code> 字段（CASE-2026-079 留下的已知缺口，见其 <code>50-release/release-notes.md</code> "已知限制"）：</p>
 <ul><li>45 个文件新增一行 <code>change_type</code>（<code>fix</code>/<code>improve</code>/<code>feature</code>，逐个读 <code>case.md</code> + <code>release-notes.md</code> 内容判断，参照 CASE-2026-079 的 4 个先例）。</li><li>1 个文件（CASE-2026-067）把未替换的模板占位符 <code>change_type: {{change_type}}</code> 修正为真实值。</li><li>3 个文件（CASE-2026-003/012/017）此前完全没有 frontmatter，按 CASE-2026-029 先例补齐最小 frontmatter 块。</li></ul>
 <p>均为只增字段/只修正错误值，不改动任何既有正文内容。</p>

@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>case-manager-close-function — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-087", "title": "case-manager-close-function — 发布说明", "updated": "2026-08-26", "change_type": "feature", "sort_key": "2026-08-26"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-087", "title": "case-manager-close-function — 发布说明", "updated": "2026-08-26T03:20:36-04:00", "change_type": "feature", "sort_key": "2026-08-26T03:20:36-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>case-manager-close-function — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-087</span> · 更新: 2026-08-26</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-087</span> · 更新: 2026-08-26T03:20:36-04:00</p>
 <p>Case Manager 新增"作废 Case"功能：处于 intake/design/plan/implementation/review 任一阶段的 case，可以标记为 <code>abandoned</code>——一个独立于既有 <code>release → archive</code> 归档路径的终止状态，参照 Inbox 的 <code>archived</code> 模式设计。作废需要填写原因，写入一条新的签名 timeline 事件（<code>lifecycle.abandoned</code>），案子从活跃列表移出但保留全部历史，可在新增的"已作废"面板里查看。</p>
 <p>背景：像 CASE-2026-039 这类在 intake 阶段就判定不再推进的 case，此前无处安放，只能悬空留在活跃列表里。</p>
 </article>
