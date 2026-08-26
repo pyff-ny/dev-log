@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>case-manager_Inbox — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-008", "title": "case-manager_Inbox — 发布说明", "updated": "2026-08-10", "change_type": "feature", "sort_key": "2026-08-10T02:48:40-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-008", "title": "case-manager_Inbox — 发布说明", "updated": "2026-08-10T02:48:40-04:00", "change_type": "feature", "sort_key": "2026-08-10T02:48:40-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>case-manager_Inbox — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-008</span> · 更新: 2026-08-10</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-008</span> · 更新: 2026-08-10T02:48:40-04:00</p>
 <p><code>case-manager-app</code> v1.1.0：</p>
 <ul><li>新增 Inbox：想法先进 Inbox（<code>new → cooling → reviewing → promoted | archived</code>），有潜力再一键升格为正式 Case 并自动预填需求文档「问题」小节（带 <code>&gt; 来自 INBOX-...</code> 溯源），减少不成熟想法直接变成正式 Case。</li><li>前提改动：<code>cases/</code>、<code>goals/</code> 从工作区根目录迁移到 <code>case-manager-app/</code> 下，Inbox 与其同级存放；<code>--cases</code> 默认值同步更新，<code>goals_root</code> 自动跟随。</li><li>顶部标签栏改为 Inbox / Case / Goal / 日志 / 说明 / 笔记，Inbox 排首位并为默认标签。</li><li>Case 列表左侧排序调整：组间与未分组 Case 改为按 case number 降序（原按组内最新 updated 时间排序），组内 <code>sequence</code> 顺序不变。</li><li>7 个新 API 端点：<code>GET/POST /api/inbox</code>、<code>GET /api/inbox/&lt;id&gt;</code>、<code>GET/PUT /api/inbox-documents/&lt;id&gt;/idea.md</code>、<code>POST /api/inbox/&lt;id&gt;/status</code>、<code>POST /api/inbox/&lt;id&gt;/promote</code>。</li></ul>
 </article>

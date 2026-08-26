@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>dev-log 博客化重新设计 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-079", "title": "dev-log 博客化重新设计 — 发布说明", "updated": "2026-08-24", "change_type": "feature", "sort_key": "2026-08-24T13:42:11-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-079", "title": "dev-log 博客化重新设计 — 发布说明", "updated": "2026-08-24T13:42:11-04:00", "change_type": "feature", "sort_key": "2026-08-24T13:42:11-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>dev-log 博客化重新设计 — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-079</span> · 更新: 2026-08-24</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-079</span> · 更新: 2026-08-24T13:42:11-04:00</p>
 <p><code>pyff-ny/dev-log</code> 从裸 Markdown 改造为有博客感的静态站点：<code>.github/scripts/sync_fix_improve_log.py</code> 直出完整 HTML（不引入 Jekyll/npm/第三方图表库）。</p>
 <ul><li>新增统一时间线首页（<code>docs/index.html</code>）：fix/improve/feature 混合倒序展示，顶部分类筛选按钮、"最近 7 天发布 N 条"摘要、近一年发布活动热力图（原生 SVG + <code>&lt;title&gt;</code> hover）。</li><li>详情页从 <code>.md</code> 换成风格统一的 <code>.html</code>，正文语义不变。</li><li>未读追踪：浏览器 <code>localStorage</code> 按 case_id 记录已读集合，首次访问全部未读，打开一条详情页只清除那一条。</li><li>新增 <code>--all</code> 全量重建模式：门槛读 <code>case.md.status</code>（只读，真正的生命周期 SSOT），修复了此前"<code>release-notes.md</code> 自己的 status 字段与 <code>case.md</code> 漂移导致部分已发布内容被漏判"的既有缺陷；日常 GitHub Actions 增量同步路径不变，仍读 <code>release-notes.md.status</code>。</li><li>顺带补齐 CASE-2026-002（feature）/005（improve）/042（feature）/029（improve，含缺失的完整 frontmatter）四个历史 case 缺失的 <code>change_type</code>。</li></ul>
 </article>

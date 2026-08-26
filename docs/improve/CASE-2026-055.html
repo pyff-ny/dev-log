@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>Case 引用字段选择器（parent_case_id / blocked_by_case_ids）— 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-055", "title": "Case 引用字段选择器（parent_case_id / blocked_by_case_ids）— 发布说明", "updated": "2026-08-18", "change_type": "improve", "sort_key": "2026-08-18T22:44:58-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-055", "title": "Case 引用字段选择器（parent_case_id / blocked_by_case_ids）— 发布说明", "updated": "2026-08-18T22:44:58-04:00", "change_type": "improve", "sort_key": "2026-08-18T22:44:58-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>Case 引用字段选择器（parent_case_id / blocked_by_case_ids）— 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-055</span> · 更新: 2026-08-18</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-055</span> · 更新: 2026-08-18T22:44:58-04:00</p>
 <p>Case Manager 的 Case 详情页新增"关联 Case"区块，用可搜索的选择器设置 <code>parent_case_id</code>（父 Case，单选）和 <code>blocked_by_case_ids</code>（依赖 Case，多选，CASE-2026-031 引入），替代此前只能手改 <code>case.md</code> 原文、凭空输入 Case ID 的方式：</p>
 <ul><li>点"更换"/"+ 添加"展开搜索框，按 ID 或标题过滤候选，点一下即选中并保存。</li><li>父 Case 的候选限制在当前 Case 所属的同一个 Goal 内，并且排除当前 Case 自己的所有后代（避免选出会让整个 Goal 视图报错的值）；如果当前 Case 没有归属任何 Goal，会显示提示而不是给出无意义的全量候选。</li><li>依赖 Case 的候选不限制 Goal，可以增量添加、也可以点 chip 上的"×"移除。</li><li>再点一次已经打开的按钮会把面板收起，不用被迫选一个才能退出。</li><li>手动编辑 <code>case.md</code> 原文这条路径继续有效，两种方式写出来的 frontmatter 格式完全一致。</li></ul>
 </article>

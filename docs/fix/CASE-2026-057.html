@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>cleanup 轻量档上游分支解析与忽略文件误判修复 — 发布说明 · dev-log</title>
-<link rel="stylesheet" href="../assets/site.css?v=e6b90a49">
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-057", "title": "cleanup 轻量档上游分支解析与忽略文件误判修复 — 发布说明", "updated": "2026-08-18", "change_type": "fix", "sort_key": "2026-08-18T22:34:37-04:00"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-057", "title": "cleanup 轻量档上游分支解析与忽略文件误判修复 — 发布说明", "updated": "2026-08-18T22:34:37-04:00", "change_type": "fix", "sort_key": "2026-08-18T22:34:37-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>cleanup 轻量档上游分支解析与忽略文件误判修复 — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-057</span> · 更新: 2026-08-18</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-057</span> · 更新: 2026-08-18T22:34:37-04:00</p>
 <p><code>case-manager-app</code> 的 cleanup 轻量档（merged_upstream 分级）修复两处判定错误：</p>
 <p>- <code>_default_upstream_ref()</code> 现在优先探测并返回 <code>origin/develop</code>（团队实际   的集成分支），只有仓库没有 <code>develop</code> 分支时才退回原来的 <code>origin/HEAD</code>   解析。之前只解析 <code>origin/HEAD</code>（本仓库是 <code>main</code>），导致所有"已合并进   develop、还没 promote 到 main"的分支永远无法通过 merged_upstream 判定。 - 脏工作区检查不再把 <code>.gitignore</code> 排除的文件（<code>.pytest_cache/</code>、   <code>__pycache__/</code> 等）算作"脏"，跑过测试的 worktree 不会再被无关的构建   产物挡住清理判定；真实未提交/未追踪的改动仍然会挡住清理。</p>
 </article>
