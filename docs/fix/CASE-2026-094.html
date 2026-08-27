@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>dev-log-timestamp-fix — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-094", "title": "dev-log-timestamp-fix — 发布说明", "updated": "2026-08-27T18:25:45-04:00", "change_type": "fix", "sort_key": "2026-08-27T18:25:45-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>dev-log-timestamp-fix — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-094</span> · 更新: 2026-08-27T18:25:45-04:00</p>
+<p>dev-log Pages 展示的 Case 更新时间此前依赖 Case Manager App"标记发布"点击那 一刻写入 <code>release-notes.md</code> frontmatter 的字段，但那一刻该文件常常还在特性 分支 worktree 里、主树还不存在，写入会静默失败——导致时间戳退化成仅日期、 同天发布的 Case 排序错误（CASE-2026-089/093 反复复现）。</p>
+<p>这次改动让 <code>.github/scripts/sync_fix_improve_log.py</code> 自己从 git 提交历史里 解析时间戳：回放 <code>release-notes.md</code> 的完整历史，找到最近一次把 <code>status</code> 改成 <code>released</code> 的提交，取其提交时间。彻底解耦对 Case Manager 写入时机的依 赖，找不到时无缝回退到原有逻辑，不影响任何既有行为。</p>
+<p>同时把两个相关 GitHub Actions workflow（<code>sync-fix-improve-log.yml</code>、 <code>reconcile-dev-log-sync.yml</code>）的 checkout 深度改为完整历史，否则 CI 里看不 到需要的提交。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
