@@ -6,11 +6,11 @@
 <link rel="stylesheet" href="../assets/site.css?v=b59d0316">
 </head>
 <body>
-<script id="case-meta" type="application/json">{"case_id": "CASE-2026-092", "title": "mk-hub-badge-adding — 发布说明", "updated": "2026-08-27", "change_type": "feature", "sort_key": "2026-08-27"}</script>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-092", "title": "mk-hub-badge-adding — 发布说明", "updated": "2026-08-27T14:22:58-04:00", "change_type": "feature", "sort_key": "2026-08-27T14:22:58-04:00"}</script>
 <nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
 <article class="case-page">
 <h1>mk-hub-badge-adding — 发布说明</h1>
-<p class="updated"><span class="entry-case-id">CASE-2026-092</span> · 更新: 2026-08-27</p>
+<p class="updated"><span class="entry-case-id">CASE-2026-092</span> · 更新: 2026-08-27T14:22:58-04:00</p>
 <p><code>mk_hub</code> 首页的跨 app 徽标总览区，从 5 个 app 扩展到 11 个。新增 6 个 app 的 <code>GET /api/badge</code> 只读端点，并把它们接进 <code>mk_hub</code> 的 <code>BADGE_APP_NAMES</code> 白名单：</p>
 <p>| App | 版本 | 徽标信号 | |---|---|---| | mk_troubleshooting | 1.1.0 → 1.2.0 | 未 promote 的 distillation 草稿数 | | goal_spectrum | 1.0.0 → 1.1.0 | 距最近一条 action_events 记录的天数 | | io_focus_panel | 1.0.0 → 1.1.0 | 距最近一条输入/输出记录的天数 | | note_vault | 0.1.0 → 0.2.0 | 距最近一条未删除捕获记录的天数 | | volt_monitor | v23.6.0 → v23.7.0 | 未结束（<code>end_ts IS NULL</code>）的限压/停电事件数 | | storage_overview | 1.0.0 → 1.1.0 | 非 planned 挂载点里不可达的数量 | | mk_hub | 2.9.0 → 2.10.0 | <code>BADGE_APP_NAMES</code> 白名单扩展，<code>fetch_badges()</code> 聚合逻辑零改动 |</p>
 <p>其余现有 5 个 app（health_panel/daily_checkin/case_manager/mk_reading/period_tracker）的 徽标行为不变。</p>
