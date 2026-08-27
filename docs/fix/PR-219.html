@@ -12,6 +12,8 @@
 <h1>fix(health_panel): hide medication reminders under the spouse account</h1>
 <p class="updated"><span class="entry-case-id">PR-219</span> · 更新: 2026-08-27T12:13:53-04:00</p>
 <ul><li><code>checkup.list_checkups()</code> built the medication list unconditionally via <code>list_medications(conn, today)</code>, ignoring the <code>account</code> it already uses to scope <code>checkup_reports</code> — so switching the 体检 tab to the spouse account still showed the same medication reminder that's only relevant to the self account.</li><li>The <code>medications</code> table has no per-person column (it's a single always-mine tracker, unlike <code>medical_visits</code> which has a <code>person</code> column), so the fix is a display-scope gate rather than a schema change: medications are only included when <code>account</code> is <code>"self"</code> or unset (no-filter callers keep seeing them); the spouse account gets an empty list.</li><li><code>/api/medications</code> (a separate, currently frontend-unused endpoint) is untouched — not implicated in the reported symptom.</li></ul>
+<h2>中文说明</h2>
+<ul><li><code>checkup.list_checkups()</code> 在拼装用药提醒列表时（<code>list_medications(conn, today)</code>）完全没有用到传入的 <code>account</code> 参数——而它旁边的体检报告（<code>checkup_reports</code>）已经按账户做了过滤，导致切到"老婆"账户时，看到的还是只该属于"我"这边的同一条用药提醒。</li><li><code>medications</code> 表本身没有区分账户的列（它是一个"始终只属于我"的单一用药追踪器，不像 <code>medical_visits</code> 表那样有 <code>person</code> 列），所以这次修复是显示层面的账户过滤，不是改表结构：只有 <code>account</code> 为 <code>"self"</code> 或未传（无过滤调用）时才会包含用药提醒；老婆账户拿到的是空列表。</li><li><code>/api/medications</code>（一个目前前端没在用的独立接口）没有改动——跟这次反馈的问题无关。</li></ul>
 </article>
 <script src="../assets/site.js?v=1b820c76"></script>
 </body>
