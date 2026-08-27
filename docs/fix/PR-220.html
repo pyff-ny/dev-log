@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(dev-log-sync): correct PR diff base and display timestamps in NY time · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-220", "title": "fix(dev-log-sync): correct PR diff base and display timestamps in NY time", "updated": "2026-08-27T12:23:39-04:00", "change_type": "fix", "sort_key": "2026-08-27T12:23:39-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(dev-log-sync): correct PR diff base and display timestamps in NY time</h1>
+<p class="updated"><span class="entry-case-id">PR-220</span> · 更新: 2026-08-27T12:23:39-04:00</p>
+<p>Two bugs found right after shipping #218 (the non-Case PR sync path):</p>
+<p>1. <strong>Why PR #219 never got a dev-log page</strong>: "Detect non-Case merged PRs" diffed <code>merge^1..merge^2</code> directly to check for <code>case-manager-app/cases/<strong></code> paths. When the feature branch tip isn't a descendant of the target's pre-merge tip — which is exactly what happened across #217/#218/#219, all cut from the same stale point without rebasing — that raw diff also reflects everything that landed on <code>develop</code> in between (note_vault changes, a Case's <code>release-notes.md</code>), spuriously matching the exclusion and skipping an unrelated PR. Fixed by diffing from <code>git merge-base</code> instead, which isolates the PR's own changes regardless of branch staleness. 2. </strong>Wrong displayed timestamp** (reported against <code>dev-log/improve/CASE-2026-091.html</code>): <code>render_case_page_html()</code> printed <code>released_at</code>/<code>updated</code> verbatim. That case's <code>release-notes.md</code> had <code>released_at</code> set to the merge commit's UTC <code>Z</code> timestamp instead of the real local time recorded in <code>case.md</code>, and the raw UTC string was displayed as-is. Added <code>_format_ny_local()</code> so display always converts to America/New_York regardless of the stored offset — fixes it for both the Case path and the new PR path; date-only/naive values pass through unchanged.</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
