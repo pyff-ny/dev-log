@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(health_panel): hide medication reminders under the spouse account · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-219", "title": "fix(health_panel): hide medication reminders under the spouse account", "updated": "2026-08-27T12:13:53-04:00", "change_type": "fix", "sort_key": "2026-08-27T12:13:53-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(health_panel): hide medication reminders under the spouse account</h1>
+<p class="updated"><span class="entry-case-id">PR-219</span> · 更新: 2026-08-27T12:13:53-04:00</p>
+<ul><li><code>checkup.list_checkups()</code> built the medication list unconditionally via <code>list_medications(conn, today)</code>, ignoring the <code>account</code> it already uses to scope <code>checkup_reports</code> — so switching the 体检 tab to the spouse account still showed the same medication reminder that's only relevant to the self account.</li><li>The <code>medications</code> table has no per-person column (it's a single always-mine tracker, unlike <code>medical_visits</code> which has a <code>person</code> column), so the fix is a display-scope gate rather than a schema change: medications are only included when <code>account</code> is <code>"self"</code> or unset (no-filter callers keep seeing them); the spouse account gets an empty list.</li><li><code>/api/medications</code> (a separate, currently frontend-unused endpoint) is untouched — not implicated in the reported symptom.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
