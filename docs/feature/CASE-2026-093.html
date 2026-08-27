@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>mk-library-tracker — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-093", "title": "mk-library-tracker — 发布说明", "updated": "2026-08-27", "change_type": "feature", "sort_key": "2026-08-27"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>mk-library-tracker — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-093</span> · 更新: 2026-08-27</p>
+<p>新增 <code>mk serve</code> 本地小工具 <code>library_tracker</code> v2.0.0：</p>
+<p>- 手动记录借阅（书名/分类/借出日期/应还日期），当前借阅按应还日期临近/逾期   程度分色提醒 - 借阅历史（还过的书自动归档，可按分类查看）+ 分类统计 - 接入 <code>mk_hub</code> 现有 <code>/api/badge</code> 机制：有书临近应还（≤3 天）或逾期时才在   hub 面板出现提醒，平时安静无提示 - <code>apps/mk_hub/serve.py</code> 的 <code>BADGE_APP_NAMES</code> 追加 <code>"library_tracker"</code></p>
+<p>原计划是自动登录 Queens Public Library 官网抓取借阅记录，Stage 3 真实验证 时被官网 WAF 拦截、无法绕过，改为手动记录方案（详见 Case 的 <code>10-design/decisions.md</code> ADR-0004）。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
