@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix: decouple date-dependent tests from wall clock, sync mk hub sleep badge · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-230", "title": "fix: decouple date-dependent tests from wall clock, sync mk hub sleep badge", "updated": "2026-08-30T16:00:25-04:00", "change_type": "fix", "sort_key": "2026-08-30T16:00:25-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix: decouple date-dependent tests from wall clock, sync mk hub sleep badge</h1>
+<p class="updated"><span class="entry-case-id">PR-230</span> · 更新: 2026-08-30T16:00:25-04:00</p>
+<ul><li>note_vault: <code>NoteStore.create_entry()</code> gains an optional <code>now</code> override so <code>test_get_badge_recent_capture_is_ok</code> no longer drifts as real time advances past its hardcoded reference date (was failing: <code>-3 != 0</code>).</li><li>health_panel: <code>compute_sleep_badge()</code> — which feeds mk hub's cross-app badge via <code>/api/badge</code> — still used the pre-fix <code>_win_vals</code>-based debt formula after commit b7d0a28 updated <code>analyze()</code>'s <code>sleep_debt_14d</code> to <code>_sleep_debt()</code> (credits today's sleep surplus against prior debt, floored at 0). The badge is now numerically identical to <code>/api/analysis</code>.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
