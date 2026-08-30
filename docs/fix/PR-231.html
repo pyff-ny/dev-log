@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(health_panel): round sleep card's latest value to avoid float display artifacts · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-231", "title": "fix(health_panel): round sleep card's latest value to avoid float display artifacts", "updated": "2026-08-30T16:09:40-04:00", "change_type": "fix", "sort_key": "2026-08-30T16:09:40-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(health_panel): round sleep card's latest value to avoid float display artifacts</h1>
+<p class="updated"><span class="entry-case-id">PR-231</span> · 更新: 2026-08-30T16:09:40-04:00</p>
+<ul><li><code>_metric_stats()</code> rounded <code>win7</code>/<code>win30</code>/<code>win90</code> mean/sd to 2 decimals but left <code>latest.value</code> as the raw float sum from <code>_daily_sleep_total()</code>, which can carry IEEE-754 artifacts (e.g. <code>4.7 + 2.6</code> → <code>7.300000000000001</code>).</li><li>The frontend (<code>app.js</code>) renders <code>latest.value</code> directly as the big "小时" number on the 睡眠 overview card — this is what surfaced the bug (screenshot showed <code>7.3999999999999995</code>).</li><li>Fix: round <code>val</code> to 2 decimals in <code>_metric_stats()</code>, matching the existing mean/sd precision. Affects sleep/steps/exercise <code>latest.value</code> uniformly (only sleep, being float-valued, was actually exhibiting the artifact).</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
