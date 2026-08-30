@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(health_panel): stop asserting stale BJ's PDF fixture literals · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-232", "title": "fix(health_panel): stop asserting stale BJ's PDF fixture literals", "updated": "2026-08-30T16:15:48-04:00", "change_type": "fix", "sort_key": "2026-08-30T16:15:48-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(health_panel): stop asserting stale BJ's PDF fixture literals</h1>
+<p class="updated"><span class="entry-case-id">PR-232</span> · 更新: 2026-08-30T16:15:48-04:00</p>
+<ul><li>SAMPLE_PDF (<code>~/Downloads/Account Information | BJ's Wholesale Club.pdf</code>) is a live re-saved snapshot of the user's real BJ's account page, not a static fixture — its order data (date, items, prices) drifts whenever a new order is placed/reprinted.</li><li>The parsing code (<code>_bjs_delivery_date</code>, <code>normalize_date</code>, <code>parse_bjs_pdf_bytes</code> in <code>serve.py</code>) has no wall-clock dependency; this is not the date-rot pattern from the note_vault/sleep-badge fixes.</li><li>Rewrote the three affected tests to assert invariants derived from the parsed response (delivery_date format, row/summary consistency, total_price = qty × unit_price, commit row built from preview) instead of literals snapshotted from an older order.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
