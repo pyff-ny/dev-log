@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(john_wick_arsenal): 新增可选的美元参考价与查询日期字段 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-237", "title": "feat(john_wick_arsenal): 新增可选的美元参考价与查询日期字段", "updated": "2026-08-31T10:28:25-04:00", "change_type": "feature", "sort_key": "2026-08-31T10:28:25-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(john_wick_arsenal): 新增可选的美元参考价与查询日期字段</h1>
+<p class="updated"><span class="entry-case-id">PR-237</span> · 更新: 2026-08-31T10:28:25-04:00</p>
+<p>两个可选 frontmatter 字段 price_usd / price_checked_at，在卡片与详情 面板展示。手工录入，Markdown 仍是唯一真相，不引入写入层。</p>
+<p>校验规则（沿用「不做猜测」的一贯做法，不清洗输入）： - 两字段必须成对——只有价没有日期等于留下一个不知何时查的数 - price_usd 必须为纯数字且 &gt; 0；$750、"1,200"、0 一律报错 - price_checked_at 必须为 YYYY-MM-DD 真实日期</p>
+<p>向后兼容：17 个既有无价条目回归 failed_count 仍为 0，一行未改。 新增 10 个测试（共 40）。VERSION 0.1.0 -&gt; 0.2.0。</p>
+<p>Co-Authored-By: Claude Opus 5 &lt;noreply@anthropic.com&gt;</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
