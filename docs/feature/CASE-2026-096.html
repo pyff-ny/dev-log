@@ -28,7 +28,7 @@
 <h3>已知限制</h3>
 <p>1. <strong>内容只有 17 支，远未穷尽片中枪械。</strong> 这是主动缩量的结果——17 支够把检索与分桶跑通并验收，剩余条目列在 App README 的待办里。 2. <strong>全部 17 支为 <code>confidence: needs_check</code>，未经审校。</strong> 影片场景归属和部分参数由 Claude 依据已有知识写就，可能有误。本 App 不是权威来源。 3. <strong><code>assets/guns/</code> 为空</strong>，所有卡片显示「暂无图片」占位。 4. <strong>36 个标签颗粒度未收敛</strong>，筛选栏偏长。 5. <strong>场景分桶是关键词匹配</strong>，正文没带上关键词表里的词就会掉进「未分类」桶；关键词表硬编码在 <code>static/app.js</code>。 6. <strong>无任何写入层</strong>——没有网页内编辑、笔记、收藏或「已掌握」标记，留作后续 Case。 7. <strong>内联列表不接受带引号的元素</strong>（含单元素 <code>["a"]</code>）。比严格必要的更严，但方向与「不做猜测」一致，README 已写明。</p>
 <h3>回滚</h3>
-<p>1. <code>cp ~/.mk_secrets/conf/capability_registry.tsv.bak-20260831_021200-jw-arsenal ~/.mk_secrets/conf/capability_registry.tsv</code> 2. <code>git revert</code> 本 Case 全部 commit，或删除 <code>apps/john_wick_arsenal/</code> 3. 删除 <code>~/toolbox-data/mk_out/serve/john_wick_arsenal.log</code>（可选）</p>
+<p>1. <code>cp </code> 2. <code>git revert</code> 本 Case 全部 commit，或删除 <code>apps/john_wick_arsenal/</code> 3. 删除 <code>~/toolbox-data/mk_out/serve/john_wick_arsenal.log</code>（可选）</p>
 <p>除注册表一行外未触碰任何既有文件，回滚后 <code>mk serve</code> 服务清单应与合并前逐项一致。</p>
 <h3>发布链路</h3>
 <ul><li>repository: <code>pyff-ny/toolbox</code></li><li>branch: <code>claude/john-wick-firearms-database-5748e3</code> → base <code>develop</code></li><li>head commit: <code>ab71dda</code></li><li>PR: <a href="https://github.com/pyff-ny/toolbox/pull/233">#233</a></li><li>merge commit: <code>78637c6</code></li><li>released_at: 2026-08-31T02:41:28-04:00</li></ul>
