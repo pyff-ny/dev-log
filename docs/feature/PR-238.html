@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(john_wick_arsenal): 新增查价来源链接字段 v0.3.0 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-238", "title": "feat(john_wick_arsenal): 新增查价来源链接字段 v0.3.0", "updated": "2026-08-31T10:46:42-04:00", "change_type": "feature", "sort_key": "2026-08-31T10:46:42-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(john_wick_arsenal): 新增查价来源链接字段 v0.3.0</h1>
+<p class="updated"><span class="entry-case-id">PR-238</span> · 更新: 2026-08-31T10:46:42-04:00</p>
+<p>接 #237（价格字段 v0.2.0）。新增第三个可选字段 <code>price_source_url</code>，把「这个价是从哪查的」一并存下来。</p>
+<h2>字段</h2>
+<p>``<code>yaml price_usd: 4500.50                    # 选填 price_checked_at: 2026-08-31          # 选填，与上面成对 price_source_url: https://…           # 选填，有它就必须有上面两个 </code>``</p>
+<p>依赖是单向的：<strong>有 URL 就必须有价格与日期</strong>（孤立的商品链接没有信息量），反过来不强制——价格可以来自链接之外的渠道。</p>
+<h2>校验</h2>
+<ul><li>必须以 <code>https://</code> 开头；<code>http://</code>、纯文本店名、含空格的值一律报错</li><li>沿用「不做猜测」的一贯做法，不清洗输入</li><li>失败照旧三处暴露：启动日志 / <code>/api/meta.failures</code> / 前端告警条</li></ul>
+<p>URL 里的冒号不影响解析——frontmatter 解析器只在第一个冒号切分，<code>https://example.com:8443/shop?sku=1&amp;ref=a:b</code> 有测试覆盖。</p>
+<h2>展示</h2>
+<p>只在详情面板，卡片上不放链接（太吵）。渲染为可点链接，文字取域名（去 <code>www.</code>），完整 URL 挂 <code>title</code>：</p>
+<p>``<code> 参考价      $4,500.50（2026-08-31 查） 价格来源    xtremegunsandammo.com </code>``</p>
+<p>链接带 <code>target="_blank"</code> + <code>rel="noopener noreferrer"</code> + <code>referrerpolicy="no-referrer"</code>。</p>
+<p><strong>关于「页面不得引用外部域」这条约束</strong>：那条针对的是页面主动加载外部资源（<code>src</code> / <code>fetch</code> / 外链 CSS）。<code>&lt;a href&gt;</code> 在用户点击之前不发任何请求，性质不同；加上 no-referrer 后点击也不向商家泄露来源页。</p>
+<h2>验收</h2>
+<p>47 个单元测试全绿（新增 7 条），<code>/usr/bin/python3</code> 3.9.6 下限跑。</p>
+<p>| 项 | 结果 | |---|---| | 17 个既有条目回归 | ✅ <code>count 17 failed 0</code>，一行未改 | | 完整三字段渲染 | ✅ 链接属性、<code>href</code>、<code>title</code> 全部正确 | | 有 URL 无价格 | ✅ 报错 | | <code>http://</code> / 纯文本 / 含空格 | ✅ 全部报错 | | 带端口与冒号的 URL | ✅ 正常解析 | | 有价无 URL / 三者全无 | ✅ 正常，不渲染来源行 |</p>
+<h2>scope 说明</h2>
+<p>计划声明 5 个文件，实际 6 个。多出的 <code>style.css</code> 加了 2 行——链接主题色与键盘焦点环，否则是浏览器默认蓝紫色且无焦点环，违反 UI Spec §1.5.6「全部交互元素可用键盘到达」。已向 Jia 说明并获认可。</p>
+<h2>已知限制</h2>
+<p>商品页 URL 寿命很短（下架、改版、SKU 变更），一两年内大概率 404。<code>price_checked_at</code> 因此同时是价格与链接的时效标记。程序不做链接存活检查——那需要外部网络请求，与本 App 的零依赖只读定位冲突。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
