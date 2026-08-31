@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(mk_hub): serve registry 保存加乐观并发控制 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-239", "title": "fix(mk_hub): serve registry 保存加乐观并发控制", "updated": "2026-08-31T13:29:58-04:00", "change_type": "fix", "sort_key": "2026-08-31T13:29:58-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(mk_hub): serve registry 保存加乐观并发控制</h1>
+<p class="updated"><span class="entry-case-id">PR-239</span> · 更新: 2026-08-31T13:29:58-04:00</p>
+<h2>背景</h2>
+<p>2026-08-31 事故：<code>john_wick_arsenal</code> 的注册行在 mk_hub「mk serve registry」tab 保存后消失。根因调查（见下）证明那次事故是用户手工从备份覆盖注册表所致，与 mk_hub 无关；但调查过程中发现一个真实的丢失更新缺口：</p>
+<ul><li><code>GET /api/serve-registry</code> 返回 <code>mtime</code>，但从未被前端保存、也从未被后端在保存时校验。</li><li>外部<strong>追加</strong>行 → 保留（既有的逐行 passthrough 逻辑）</li><li>外部<strong>删除</strong> serve 行 → 400（既有的 <code>missing</code> 校验）</li><li>外部<strong>修改已有 serve 行的字段</strong>（端口/路径/status/summary）→ <strong>被 tab 加载时的陈旧快照静默覆盖</strong></li></ul>
+<h2>修复</h2>
+<ul><li><code>GET /api/serve-registry</code> 新增 <code>revision</code>（整份文件的 sha256，每次请求现算，不缓存不落盘）。</li><li><code>PUT /api/serve-registry</code> 新增必填 <code>revision</code>；缺失 → 400；与磁盘当前值不符 → <strong>409 + <code>conflict:true</code></strong>，校验在生成备份之前，冲突时不产生备份、不产生临时文件、注册表零改动。</li><li>前端保存后都会记住最新 <code>revision</code>；收到 409 时用响应里的最新 rows 重渲染列表并弹出可读提示，不静默失败、不静默覆盖。</li><li>用 sha256 而非 mtime+size：本次事故的覆盖恰好是等长内容，size 比对发现不了。</li><li>未做字段级三方合并——注册表是 <code>mk serve</code> 的 SSOT，宁可拒绝、不做猜测；升级后未刷新的旧页面保存会得到 400，属预期。</li></ul>
+<h2>兼容性</h2>
+<ul><li><code>GET</code> 响应新增字段，additive。</li><li><code>PUT</code> 请求新增必填字段，<strong>破坏性</strong>：前后端同一个 PR 一起发布。</li><li><code>save_serve_registry()</code> 新增关键字参数 <code>expected_revision=None</code>，默认跳过校验，保留既有直接调用方行为。</li><li>mk_hub 是常驻 HTTP 服务，非 mk CLI 子命令，Exit Code Constitution 不适用；<code>mk serve</code> 全链路只读该文件，人类输出/JSON schema 零变化。</li></ul>
+<h2>测试</h2>
+<p><code>apps/mk_hub/test_serve_registry.py</code>：新增 8 条用例（含 2 条并发回归锁：加载后外部追加一行 / 加载后外部改一行端口，两种情况保存都必须被拒且外部改动完好，并显式断言冲突时 <code>.bak-*</code>/<code>.tmp</code> 均为 0）。真实 Terminal 验证 21/21 通过（agent sandbox 里 <code>test_study_tracker_launcher_resolves_its_venv_python</code> 因无法读取 <code>~/Documents</code> 报 PermissionError，属环境限制，与本次改动无关，pristine <code>origin/develop</code> 同样失败）。</p>
+<p>已确认：全程未触碰真实注册表 <code>~/.mk_secrets/conf/capability_registry.tsv</code>（测试全部用 <code>tempfile.TemporaryDirectory()</code>）。</p>
+<h2>已知限制</h2>
+<ul><li>只做整文件级冲突检测，不做字段级合并——外部只要改了任意一行，本次编辑就要求刷新重做。</li><li>升级后未刷新的旧页面保存会得到 400（预期行为，README 已注明）。</li></ul>
+<h2>Test plan</h2>
+<ul><li>[x] <code>python3 apps/mk_hub/test_serve_registry.py -v</code>（真实 Terminal，21/21 OK）</li><li>[x] <code>python3 apps/mk_hub/test_capability_registry.py</code></li><li>[x] <code>python3 apps/mk_hub/test_serve_disk.py</code></li><li>[x] <code>cmp apps/mk_hub/serve.py apps/mk_hub/releases/v2.11.0/serve.py</code></li><li>[x] <code>cmp apps/mk_hub/index.html apps/mk_hub/releases/v2.11.0/index.html</code></li><li>[ ] 合并后手工验证：追加一行 → tab 内保存 → 应见 409 提示、列表刷新、追加行仍在（表单路径与启用/禁用 toggle 路径都需验证）</li></ul>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
