@@ -11,7 +11,9 @@
 <article class="case-page">
 <h1>mk-project-app — 发布说明</h1>
 <p class="updated"><span class="entry-case-id">CASE-2026-095</span> · 更新: 2026-08-31T16:16:27-04:00</p>
-
+<p><code>v1.0.0</code>，首个可用版本。新增 <code>apps/mk_project</code>：管有明确交付物、多个任务、任务间有依赖和截止日期的一次性项目。与仓内其它 <code>mk serve</code> 应用零耦合，不读写任何其它 app 的数据库。</p>
+<ul><li>分类、项目（交付物定义必填）、里程碑、任务</li><li>完整依赖图：服务端环检测（写入前跑，成环零写入）、最早开始日推导（钳到项目开始日）、关键路径</li><li>手写两段式 SVG 甘特图：依赖连线、关键路径高亮、逾期标红</li><li>多项目总览：跨项目进度、今日到期、逾期、阻塞</li><li>归档：结项后只读，任务列表可查看，复盘可追加式修订（唯一允许的写入口）</li><li><code>task_events</code>：只追加的任务级变更痕迹（v1.1 统计层的数据前置条件）</li><li>日志 / 说明 / 笔记三件套，<code>GET /health</code>，<code>GET /api/badge</code>（供 mk_hub）</li></ul>
+<p>零外部依赖，Python 标准库 + 原生 HTML/CSS/JS。</p>
 </article>
 <script src="../assets/site.js?v=1b820c76"></script>
 </body>
