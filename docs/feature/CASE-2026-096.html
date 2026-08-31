@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>John-wick-guns — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-096", "title": "John-wick-guns — 发布说明", "updated": "2026-08-31T02:46:49-04:00", "change_type": "feature", "sort_key": "2026-08-31T02:46:49-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>John-wick-guns — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-096</span> · 更新: 2026-08-31T02:46:49-04:00</p>
+<p>&gt; 终版，<code>ALLOW CLOSE</code> 回写于 2026-08-31。</p>
+<h3>版本</h3>
+<p><code>john_wick_arsenal</code> <strong>v0.1.0</strong> — 首版。</p>
+<h3>发布记录</h3>
+<p>| 步骤 | 结果 | |---|---| | feature PR | <a href="https://github.com/pyff-ny/toolbox/pull/233">#233</a>，base <code>develop</code>，37 个文件、10 个 commit | | 合并 | <strong>MERGED</strong> 2026-08-31，merge commit <code>78637c6</code> | | AC1/AC8 合并后补验 | ✅ Jia 在真实终端执行 <code>mk serve start john_wick_arsenal &amp;&amp; curl -s http://127.0.0.1:8653/health</code>：启动成功（pid 59626），<code>{"status":"ok","version":"0.1.0","count":17,"failed_count":0}</code>；<code>mk serve status</code> 列出该服务为 <code>up</code> | | 生命周期 | Jia 在 HTML Case Manager 手动推进至 <code>release</code>，<code>released_at: 2026-08-31T02:41:28-04:00</code> |</p>
+<p><code>develop</code> → <code>main</code> 的晋级 PR 尚未创建；届时必须用 <strong>Create a merge commit</strong>，squash 会破坏 ancestry 并在下次晋级时造成假冲突。</p>
+<h3>发布内容</h3>
+<p>一个本地零依赖的只读枪械资料库，收录疾速追杀 1-4 出现过的枪。</p>
+<p><strong>新增 App</strong> <code>apps/john_wick_arsenal/</code>，端口 8653，注册进 <code>mk serve</code>。</p>
+<ul><li><strong>三个视图</strong>：枪库（筛选栏 + 卡片网格 + 详情面板）、按场景选枪（把「适合场景」反向聚合成情境入口）、影片（JW1-4 各自清单与出场备注）</li><li><strong>检索</strong>：关键词（枪名 + 正文全文）、影片、类别、口径、标签、可信度，六维可叠加；同维度 OR，跨维度 AND</li><li><strong>数据</strong>：Markdown 是唯一真相（<code>data/guns/&lt;slug&gt;.md</code>），App 只读，git 就是版本史。首批 17 支条目，覆盖全部四部影片与全部五个类别</li><li><strong>图片</strong>：<code>assets/guns/</code> 手动放置，服务端预探存在性，缺图走空态且不产生 404</li><li><strong>严格解析</strong>：frontmatter 受控子集 + 七个固定正文标题，任何越界都报错并在日志、<code>/api/meta</code> 与前端告警条三处暴露，绝不静默跳过</li></ul>
+<p><strong>技术形态</strong>：Python stdlib（<code>http.server</code>）+ 原生 HTML/CSS/JS，零外部依赖。进程只读磁盘，除 stderr 外无持久化副作用。视觉沿用既有 <code>mk serve</code> App 设计 token。</p>
+<p><strong>测试</strong>：30 个单元测试，含 20 条以上负路径。</p>
+<h3>兼容性</h3>
+<p>新 App，不改动任何既有命令、输出、schema 或退出码。仓库外唯一改动是 <code>capability_registry.tsv</code> 追加一行（已备份）。</p>
+<h3>已知限制</h3>
+<p>1. <strong>内容只有 17 支，远未穷尽片中枪械。</strong> 这是主动缩量的结果——17 支够把检索与分桶跑通并验收，剩余条目列在 App README 的待办里。 2. <strong>全部 17 支为 <code>confidence: needs_check</code>，未经审校。</strong> 影片场景归属和部分参数由 Claude 依据已有知识写就，可能有误。本 App 不是权威来源。 3. <strong><code>assets/guns/</code> 为空</strong>，所有卡片显示「暂无图片」占位。 4. <strong>36 个标签颗粒度未收敛</strong>，筛选栏偏长。 5. <strong>场景分桶是关键词匹配</strong>，正文没带上关键词表里的词就会掉进「未分类」桶；关键词表硬编码在 <code>static/app.js</code>。 6. <strong>无任何写入层</strong>——没有网页内编辑、笔记、收藏或「已掌握」标记，留作后续 Case。 7. <strong>内联列表不接受带引号的元素</strong>（含单元素 <code>["a"]</code>）。比严格必要的更严，但方向与「不做猜测」一致，README 已写明。</p>
+<h3>回滚</h3>
+<p>1. <code>cp ~/.mk_secrets/conf/capability_registry.tsv.bak-20260831_021200-jw-arsenal ~/.mk_secrets/conf/capability_registry.tsv</code> 2. <code>git revert</code> 本 Case 全部 commit，或删除 <code>apps/john_wick_arsenal/</code> 3. 删除 <code>~/toolbox-data/mk_out/serve/john_wick_arsenal.log</code>（可选）</p>
+<p>除注册表一行外未触碰任何既有文件，回滚后 <code>mk serve</code> 服务清单应与合并前逐项一致。</p>
+<h3>发布链路</h3>
+<ul><li>repository: <code>pyff-ny/toolbox</code></li><li>branch: <code>claude/john-wick-firearms-database-5748e3</code> → base <code>develop</code></li><li>head commit: <code>ab71dda</code></li><li>PR: <a href="https://github.com/pyff-ny/toolbox/pull/233">#233</a></li><li>merge commit: <code>78637c6</code></li><li>released_at: 2026-08-31T02:41:28-04:00</li></ul>
+<h3>后续</h3>
+<p>首要一件事是<strong>逐条审校那 17 支条目</strong>，确认无误后把 <code>confidence</code> 从 <code>needs_check</code> 改为 <code>verified</code>。App 经过 30 个测试与两轮评审，内容没有。待办清单见 <code>apps/john_wick_arsenal/README.md</code>。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
