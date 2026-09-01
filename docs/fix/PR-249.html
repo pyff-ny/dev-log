@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(return_to_root): sidebar overflow from nowrap seed text · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-249", "title": "fix(return_to_root): sidebar overflow from nowrap seed text", "updated": "2026-09-01T00:47:18-04:00", "change_type": "fix", "sort_key": "2026-09-01T00:47:18-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(return_to_root): sidebar overflow from nowrap seed text</h1>
+<p class="updated"><span class="entry-case-id">PR-249</span> · 更新: 2026-09-01T00:47:18-04:00</p>
+<ul><li>Follow-up to #244: <code>.seed-sidebar</code>'s <code>flex-basis: 230px</code> was being ignored because a flex item's default <code>min-width</code> is <code>auto</code> (= its content's min-content size), and the nowrap seed titles/excerpts inside had no line-break points — so the sidebar grew to fit that unwrapped text instead of truncating with ellipsis, squeezing the detail pane down to a narrow column.</li><li>Add <code>min-width: 0</code> to <code>.seed-sidebar</code> and bump the page's max-width from 940px to 1100px for more room.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
