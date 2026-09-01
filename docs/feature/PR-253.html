@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(frame_note): 观看记录热力图改用自绘 hover tooltip · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-253", "title": "feat(frame_note): 观看记录热力图改用自绘 hover tooltip", "updated": "2026-09-01T13:36:44-04:00", "change_type": "feature", "sort_key": "2026-09-01T13:36:44-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(frame_note): 观看记录热力图改用自绘 hover tooltip</h1>
+<p class="updated"><span class="entry-case-id">PR-253</span> · 更新: 2026-09-01T13:36:44-04:00</p>
+<p>原来格子用 title 属性，原生提示要停顿约 1 秒，而格子只有 10px，扫过一行基本看不到。改为跟随鼠标即时显示的自绘 tooltip。</p>
+<ul><li>heatmapTipPosition() 纯函数处理边缘翻转与视口夹紧</li><li>.heatmap-grid 事件委托，一个监听器覆盖全部格子</li><li>滚动时收起（滚动不触发 mousemove，否则提示会错位）</li><li>复用现有 CSS 变量，跟随深色模式</li></ul>
+<p>纯客户端改动，未新增或修改请求、持久化、导航与安全语义。 测试 67/67 通过；浏览器实测边缘翻转与隐藏行为正确。</p>
+<p>顺带把 jpg 素材加入 .gitignore（独立 commit）。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
