@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(mk_hub, nihongo_drill): add mk_project and nihongo_drill to badge overview · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-251", "title": "feat(mk_hub, nihongo_drill): add mk_project and nihongo_drill to badge overview", "updated": "2026-09-01T01:15:59-04:00", "change_type": "feature", "sort_key": "2026-09-01T01:15:59-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(mk_hub, nihongo_drill): add mk_project and nihongo_drill to badge overview</h1>
+<p class="updated"><span class="entry-case-id">PR-251</span> · 更新: 2026-09-01T01:15:59-04:00</p>
+<ul><li><code>mk_project</code> already implemented <code>/api/badge</code> but was missing from <code>mk_hub</code>'s <code>BADGE_APP_NAMES</code> whitelist — added it.</li><li><code>nihongo_drill</code> had no badge endpoint; added <code>Store.badge()</code> + <code>/api/badge</code> route reporting due-review-card count (ok=0, warn=1-19, crit&gt;=20), reusing the existing <code>progress()</code> due-count query.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
