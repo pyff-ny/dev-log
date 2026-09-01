@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(return_to_root): title-bar version/update-time/db-path + staleness warning · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-250", "title": "feat(return_to_root): title-bar version/update-time/db-path + staleness warning", "updated": "2026-09-01T00:54:12-04:00", "change_type": "feature", "sort_key": "2026-09-01T00:54:12-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(return_to_root): title-bar version/update-time/db-path + staleness warning</h1>
+<p class="updated"><span class="entry-case-id">PR-250</span> · 更新: 2026-09-01T00:54:12-04:00</p>
+<ul><li>Add the mk-serve-app-design title-bar convention (already used by virtual_travel/mk_hub) to 回根: <code>/health</code> now reports <code>code_mtime</code> (max mtime across <code>serve.py</code>, <code>store.py</code>, <code>static/*</code>) and a <code>stale</code> flag (true when code changed after this process started).</li><li>Header now shows: code update time, database path, service URL, and a red "代码已更新，请重启服务器" warning when stale.</li></ul>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
