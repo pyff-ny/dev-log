@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>mk-project-v1.1 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-097", "title": "mk-project-v1.1 — 发布说明", "updated": "2026-09-01T00:26:51-04:00", "change_type": "feature", "sort_key": "2026-09-01T00:26:51-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>mk-project-v1.1 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-097</span> · 更新: 2026-09-01T00:26:51-04:00</p>
+<p>mk_project v1.0.0 → <strong>v1.1.0</strong>：统计层。</p>
+<p>在 v1.0 已落库的 <code>task_events</code> 与 <code>tasks.estimate_minutes</code>/<code>actual_minutes</code> 之上，新增第 7 个 Tab「统计」，回答三个问题：</p>
+<ul><li><strong>估计准度</strong>——同时填了估计与实际工时的已完成任务，实际 / 估计的中位与平均比值、超出估计的占比，按分类与项目分组。零估计、只填一边的任务排除并单独计数，不静默丢弃。</li><li><strong>跨项目分类统计</strong>——每个分类的已结项/进行中项目数、平均周期（缺起始日的排除并计数）、逾期率（读各项目结项当时的快照，不重算历史）、阻塞总时长（成对的 <code>blocked</code>/<code>unblocked</code> 事件配对，未解除的开区间计至当前并单独标出还有几段在长）。</li><li><strong>复盘检索</strong>——在已结项项目的复盘正文里按关键词查找，<code>%</code>/<code>_</code> 按字面匹配。</li></ul>
+<p>统计计算按三层架构（<code>mk-serve-app-design/references/architecture.md</code>）走独立 <code>analysis/</code> 目录：一个 DuckDB 会话读取自身的 SQLite 库（stdlib sqlite3 取行喂 DuckDB 内存表，不用 <code>ATTACH</code>/<code>sqlite_scanner</code>，运行期零扩展零联网）算出统计，写两个 JSON 缓存；<code>serve.py</code> 只读缓存原样返回并附 <code>age_seconds</code>，全文<strong>不引入 DuckDB</strong>（AST 判定守着这条边界，比原计划的全文 grep 更严）；前端只 fetch + 渲染，不做任何统计计算。</p>
+<p>launchd 每 30 分钟触发一次全新进程刷新缓存，不设过期——旧不旧由 Jia 判断，不是一个会在背后把数据抽走的机制。缓存缺失或损坏时接口返回 404 并给出可直接复制的命令，不是 500。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
