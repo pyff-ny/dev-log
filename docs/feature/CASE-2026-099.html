@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>mk-day-ledger — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-099", "title": "mk-day-ledger — 发布说明", "updated": "2026-09-01T17:21:18-04:00", "change_type": "feature", "sort_key": "2026-09-01T17:21:18-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>mk-day-ledger — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-099</span> · 更新: 2026-09-01T17:21:18-04:00</p>
+<p>新建独立 <code>mk serve</code> app，端口 <code>8654</code>，不读不写任何其他 app 的数据。</p>
+<h3>为什么要有它</h3>
+<p>既有的 <code>io_focus_panel</code> 只记有意义的输入/输出条目，<code>goal_spectrum</code> 只记与目标关联的行动事实， 两者都是<strong>稀疏</strong>记录，加不出完整的一天，回答不了「24 小时到底去哪了」。</p>
+<p>更要紧的是：核查 <code>goal_spectrum</code> 的建表语句确认，它与"量"有关的字段只有 <code>planned_minutes</code> 与 <code>actual_minutes</code>，<strong>全是时间投入，没有任何存放"结果值"的表</strong>。所以「plank 从 1 分钟练到 3 分钟」这类可衡量结果，在既有系统里根本无处安放。这块真空是本次范围从"时间分配"扩到 "时间 → 结果"的直接依据。</p>
+<h3>三层模型</h3>
+<p>| 层 | 是什么 | 例子 | |---|---|---| | 时间层 | 24h 铺满的计划轨 + 实际轨 | 今天「维持·健身」40 分钟 | | 指标层 | 与时间无关的结果打点 | 9/1 plank = 65 秒；9/15 = 95 秒 | | 承诺层 | 目标值 + 期限，绑到上面任一层 | 睡眠 ≥7h/天；plank 60→180 秒，截止 10/01 |</p>
+<p>承诺声明「投入来源子类」后，给出每周投入时长与结果值的对照图——直接回答 <strong>我花的时间到底有没有转化成结果</strong>。</p>
+<h3>关键设计</h3>
+<p>- <strong>一天严格铺满 1440 分钟</strong>，零缝隙零重叠，15 分钟对齐。不变量由编辑操作的形状保证：   只有切一刀 / 贴分类 / 合并三个动作，<strong>刻意不提供任意区间插入</strong>——那是唯一能破坏铺满的形状。 - <strong>防「只剩漂亮计划」</strong>：未填的实际块自动继承计划值，但标 <code>planned_default</code>；   实测覆盖率 =（<code>edited</code>+<code>confirmed</code>）/1440。覆盖率低就是在告诉你这天的数据别当真。   承诺只用已实测的天计分——拿计划给自己打分正是本 app 要消灭的自欺。 - <strong>7 个大类冻结不可增删</strong>（睡眠·维持·工作·输入·输出·关系·空耗，另加系统类「未分配」），   保证跨年可比；子类可自由新建、可归档但不可删除（历史块引用着它们）。 - 一心二用记「主活动 + 伴随活动」，伴随活动不计时长，保住总和可信。</p>
+<h3>页面</h3>
+<p>今日（纵向双轨时间轴 + 环形占比 + 覆盖率）· 承诺（进度 + 指标打点 + 投入产出对照图）· 趋势（周/月堆叠柱 + 每桶实测率）· 日志 · 说明。</p>
+<p>图表全部手写 SVG，未引入 Chart.js；Style A 浅/深色暖调纸感；窄屏双轨改上下堆叠。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
