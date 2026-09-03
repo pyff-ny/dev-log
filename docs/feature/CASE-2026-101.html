@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>jingangjing-add-地藏经 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-101", "title": "jingangjing-add-地藏经 — 发布说明", "updated": "2026-09-03T07:05:33-04:00", "change_type": "feature", "sort_key": "2026-09-03T07:05:33-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>jingangjing-add-地藏经 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-101</span> · 更新: 2026-09-03T07:05:33-04:00</p>
+<p>两件事一起发：收《地藏经》，以及让一次阅读可以暂停后续读——后者是前者的可用性前提， 1.7 万字一遍读不完是常态。</p>
+<h3>新增《地藏菩萨本愿经》</h3>
+<p>底本是 Jia 提供的《地藏菩萨本愿经（简体校勘注音版）》（地藏七 编，2010 年版， 唐实叉难陀译）。经特征句核验，该底本属<strong>藏本系</strong>校勘版（含「生人天中受胜妙乐者」， 不含流通版的「是人眷属.如有福力」），与卷首印光大师序「宜以藏本为主」的主张一致。</p>
+<p>- <strong>13 品，69 段，16,929 汉字</strong>。只收正文（原书 p8–142），不收开经偈、补缺真言、   回向文、西方发愿文与校勘附录。 - <strong>该底本以 <code>.</code> 作顿点，正文原样保留，不做标点校订</strong>——沿用 app 一贯的「原样录入」原则。 - 品次与品名是原书固有的；但原书正文连排、<strong>没有自然分段</strong>，所以 69 个段是按约 250 字   就近顿点切出的<strong>阅读与批注单位</strong>，两处偈颂整块成段并保留换行。它们不是原书分段，   更不是传统科判——README、模块 docstring、抽取脚本三处都写明了这一点。 - 正文由一次性抽取脚本从底本 PDF 生成，脚本随 Case 保存（<code>30-implementation/extract_dizangjing.py</code>），   不进 app 目录。</p>
+<h3>阅读可以暂停、续读、留书签</h3>
+<p>会话由「开始 → 读完」两态扩为 <strong>running / paused / finished</strong> 三态：</p>
+<p>- 点<strong>暂停</strong>：当前累计时长落库，同时记下读到哪一段。 - 回到这部经会看到一条<strong>恢复条幅</strong>（已累计多久、上次读到哪一品），   三个出口：继续阅读 / 标记读完 / 放弃这次。 - 点<strong>继续阅读</strong>：自动滚回书签那一段并高亮，计时从累计值接着跑，   <strong>暂停期间的时间不计入</strong>。 - 跨天、关掉浏览器再开都能恢复——状态存在数据库里，不依赖页面存活。 - 切换到另一部经时<strong>自动暂停</strong>（不再像 v2.0.0 那样把会话废掉），回来还能接着读。 - 阅读期间每 60 秒向服务端报到一次；页面崩溃或断网时，服务端按最后一次报到截断，   离线的时间不会被算成在读（最多多算 90 秒）。</p>
+<h3>数据与接口</h3>
+<p>- <code>sessions</code> 加四列（<code>accumulated_seconds</code> / <code>resumed_at</code> / <code>last_seen_ts</code> /   <code>bookmark_section_id</code>），<strong>只加列</strong>。既有 4 次阅读、18 条批注一条未动、统计一字未变。 - 新增 <code>GET /api/session/open</code> 与 <code>POST /api/session/{pause,resume,heartbeat,discard}</code>；   <code>POST /api/session/start</code> 在该经已有未结束会话时返回 <strong>409</strong>。 - <strong>既有端点行为全部不变</strong>；<code>/api/badge</code> 由 2 条变 3 条，字段名与数组形状不变，   mk_hub 徽章总览无需改动。 - 一处经批准的语义变更：<strong>放弃的会话现在把已读时间计入累计阅读时长</strong>（仍不计完整次数）。   理由是这个 app 的立意是「诚实的痕迹」，那些时间确实读了。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
