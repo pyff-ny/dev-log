@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>jingangjing-扩展 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-100", "title": "jingangjing-扩展 — 发布说明", "updated": "2026-09-03T01:38:06-04:00", "change_type": "feature", "sort_key": "2026-09-03T01:38:06-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>jingangjing-扩展 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-100</span> · 更新: 2026-09-03T01:38:06-04:00</p>
+<p><code>jingangjing</code> 由「金刚经读诵记数」扩展为<strong>集成的佛经诵读 app</strong>。</p>
+<h3>新增《心经》</h3>
+<p>玄奘译通行本，按意群分 7 段（观照总纲 / 色空不二 / 诸法空相 / 空中无相 / 无明与四谛 / 菩萨与三世诸佛 / 般若咒）。段标题是为逐段批注而定的阅读单位标签，不是传统科判—— 心经没有传统分品。与金刚经享有完全同等的待遇：独立计时、独立完整次数、逐段批注、独立历史。</p>
+<h3>界面改为总览侧栏</h3>
+<p>左栏是置顶「总览」+ 已收录经文列表，每部经显示「完整次数 · 距上次读完多少天」； 右区随选中项整体切换。跨经的汇总统计、各经一览、最近 10 次会话只在「总览」出现一次， 不在每部经的页面里重复。选中某部经时，阅读 / 历史 / 批注总览三页全部限定在这部经内。 窄屏（≤900px）侧栏塌成顶部横条，所有经文一屏可见。</p>
+<p>计时途中切换到另一部经会先确认；确认后这次会话留作「未完成」，与关掉页面同义。</p>
+<h3>正文来源改为 <code>scriptures/</code> 包</h3>
+<p><code>sutra_content.py</code>（单文件、扁平 <code>SECTIONS</code>）改为 <code>scriptures/</code> 包：注册表 <code>__init__.py</code> + 每经一个只读内容模块。收录一部新经＝新增一个文件 + 注册表加一行， <code>serve.py</code> 一行不动——地藏经将来直接沿此路进来。金刚经 32 分正文逐字迁入，未动一字 （sha256 前后一致，且有测试常驻锁住）。</p>
+<h3>数据与接口</h3>
+<p>- <code>sessions</code> / <code>notes</code> 各加 <code>scripture</code> 列（只加列，additive）。既有 <strong>3 次完整阅读与   18 条理解笔记</strong>由 <code>DEFAULT 'jingangjing'</code> 回填为金刚经，一条未丢、统计一字未变。 - 新增 <code>GET /api/scriptures</code>；<code>/api/sections</code>、<code>/api/sessions</code>、<code>/api/stats</code>、<code>/api/notes</code>   接受 <code>?scripture=</code>；<code>POST /api/session/start</code>、<code>POST /api/notes</code> 接受 body 里的   <code>scripture</code>。<strong>不带新参数时行为与 v1 完全一致。</strong> - <code>/api/badge</code> 由 1 条改为每经一条（<code>key=last_read_&lt;slug&gt;</code>，label 带经名），   数组形状与四个字段名不变。mk_hub 徽章总览无需改动即可显示；当天已读完的经会被   mk_hub 既有的过滤规则自动隐去，不占面板位置。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
