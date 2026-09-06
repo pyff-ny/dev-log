@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-102", "title": "hvac-log-app — 发布说明", "updated": "2026-09-06T00:53:51-04:00", "change_type": "feature", "sort_key": "2026-09-06T00:53:51-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-102</span> · 更新: 2026-09-06T00:53:51-04:00</p>
+<p>新应用 <code>apps/hvac_log/</code>。把每天跟师傅出工学到的东西结构化存下来，可回溯、可复盘、可统计。</p>
+<p>本次只交付 <strong>P0 建库 + P1 导入</strong>，分析层与展示层另开 Case。</p>
+<h3>数据库</h3>
+<p>18 张表 + FTS5 全文索引 + 6 个触发器，落在 <code>~/toolbox-data/db/hvac-log/hvac-log.db</code>。</p>
+<p>``<code> 字典层    level_scale · skill_grade_scale 学习域    job · learning · safety_observation · question · learning_gap 部件域    component_type · component_install 设备域    equipment 工作域    work_day · work_segment · session 技能域    skill · skill_observation 收入域    comp_period · market_rate · min_wage </code>``</p>
+<p>系统最重要的不变量：<strong>知识条目按来源分级，并支持「待核实 / 已证伪」状态</strong>。 <code>verified = 2</code> 的条目保留原文，在 <code>verify_note</code> 里写正确说法，不删除—— 这样能回顾自己纠正过哪些误解，也能看出师傅哪些说法不可靠。</p>
+<p>三条原本只写在文档里的规则，这次下沉成了数据库约束：</p>
+<ul><li>自评不能单独把技能推到 L3 → <code>CHECK (NOT (source='self' AND level&gt;=3))</code></li><li><code>job.status</code> 是状态机不是标签 → <code>job_status_fsm</code> 触发器强制迁移</li><li>工时区间不许重叠 → <code>seg_no_overlap_ins/upd</code> + <code>CHECK(work_date=substr(start_ts,1,10))</code></li></ul>
+<h3>导入</h3>
+<p><code>import.py</code>：JSON Schema 校验 → 语义检查 → 预览 → 确认 → 备份 → 单事务写入。 以「日」为单位，重复导入同一天替换那天的记录，天然幂等； <code>component_type</code> / <code>equipment</code> / <code>skill</code> 是累积知识，只 upsert 永不删除。</p>
+<h3>设计文档</h3>
+<p><code>apps/hvac_log/DESIGN.md</code> 取代 <code>~/Downloads/hvac-log-DESIGN.md</code>， 逐条记录了 2026-09-05 复审那 18 条发现的处置结果。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
