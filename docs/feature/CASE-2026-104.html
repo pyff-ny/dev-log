@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app-展示层 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-104", "title": "hvac-log-app-展示层 — 发布说明", "updated": "2026-09-06T15:12:17-04:00", "change_type": "feature", "sort_key": "2026-09-06T15:12:17-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app-展示层 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-104</span> · 更新: 2026-09-06T15:12:17-04:00</p>
+<p>数据进得去，现在也出得来了。<code>mk serve</code> 上多一个 App，端口 8655，七个只读页面：</p>
+<p>| 页面 | 看什么 | |---|---| | 时间线 | 每天做了什么，工段与工单挂在日期下，最近一天默认展开 | | 知识库 | 知识点按 <code>source × verified</code> 筛，中文全文搜；已证伪的原文加删除线、正确说法配绿框 | | 症状索引 | 同一句症状归并，看得出「这毛病见过几次」 | | 待办 | 待答问题 + 未解缺口，含「自己推的不算真解决」那一批 | | 技能进度 | 当前档位、观测上限、封顶原因 | | 工时与收入 | 技术工时占比、ACWR、日薪对照行情与法定最低 | | 部件库 | 部件知识 + 安装实例，空白的失效模式一眼可见 |</p>
+<h3>架构：三层，各自零重算</h3>
+<p>``<code> analyze.py   分析层 SSOT：一切派生计算    ↓ import serve.py     只做路由与 json.dumps，自己不算任何东西    ↓ fetch static/      只把数字与布尔变成 DOM </code>``</p>
+<p>新的派生计算加进 <code>analyze.py</code> 而不是另起炉灶，所以 <code>analyze.py hours --json</code> 与网页工时页永远给出同一个数——验收用 <code>diff</code> 锁死这条。 <code>QUERIES</code> 由 4 项扩到 12 项，CASE-2026-103 的四个查询一字未改。</p>
+<h3>落定五条挂了很久的裁决</h3>
+<p>CASE-2026-102 复审留给展示层的 ⏸，本次全部落地，阈值都是具名常量：</p>
+<p>| # | 裁决 | |---|---| | §7 | 中文 FTS 保持 <code>unicode61</code>，搜索框自动把「液态」改写成 <code>"液态"*</code>，用户不必自己补 <code>*</code> | | #6 | 谈判弹药按 <code>evidence_grade</code> 过滤而非 <code>source</code>（按 <code>source</code> 会让这张表恒空），连带解开 <code>'exam'</code> 与「AI 一律标 claude」的冲突 | | #7 | 当前档位连续判定：孤立的 L4 不能把 L1 顶成 L4；同时给 <code>max_observed</code> 与 <code>capped_by</code>，UI 解释得清「为什么没到 L4」 | | #8 | 观测时效门槛 180 天，过期观测保留显示但不计分——凭据过期和从未取得是两回事 | | #9 | ACWR 数据不足返回 <code>available: false</code> + 还差几天，不填 0 也不藏起来 |</p>
+<h3>零依赖</h3>
+<p>不上 DuckDB（SQLite 3.53.4 原生支持窗口函数，ACWR 用不着换引擎）， 不 vendored Chart.js（两张图手绘 SVG，省 201KB 与 light/dark 重建逻辑）， 无构建步骤，无 CDN。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
