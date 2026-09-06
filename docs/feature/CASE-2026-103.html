@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app-分析层 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-103", "title": "hvac-log-app-分析层 — 发布说明", "updated": "2026-09-06T10:37:10-04:00", "change_type": "feature", "sort_key": "2026-09-06T10:37:10-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app-分析层 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-103</span> · 更新: 2026-09-06T10:37:10-04:00</p>
+<p>新增分析层 <code>apps/hvac_log/analyze.py</code>，四个只读子命令：</p>
+<p>| 子命令 | 回答什么问题 | |---|---| | <code>faults</code> | 哪些部件在坏，哪些部件还没写故障模式 | | <code>sources</code> | 哪个来源的说法可靠（<code>source × verified</code> 与证伪率） | | <code>hours</code> | 技术工时占多少 | | <code>gaps</code> | 哪些缺口还没真正解决 |</p>
+<p>CASE-2026-102 交付存储层时按裁决五「不建任何 <code>v_*</code> 视图」，把派生逻辑全留给了分析层， 于是数据进得去、出不来。这次补上读取路径。</p>
+<p>四条查询语义是<strong>判定</strong>而非事实，写成模块级常量并在 <code>10-design/decisions.md</code> 留证：</p>
+<ul><li>「故障」= <code>component_install.replaced_reason</code> 非空</li><li>证伪率分母 = 已核实条数，<strong>分母为 0 时给 <code>null</code> / <code>—</code>，不是 0%</strong></li><li>「技术工时」= <code>seg_type IN ('service','install')</code></li><li>「未解缺口」= <code>resolved = 0</code> <strong>或</strong> <code>resolution = 'inferred'</code></li></ul>
+<p>第二条和第四条都不是顺手写的：用全部当分母会让查得少的来源显得干净， 而只查 <code>resolved = 0</code> 会漏掉自己糊弄过去的缺口——那恰恰是这套系统想抓的东西。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
