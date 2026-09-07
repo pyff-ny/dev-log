@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app-improve — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-106", "title": "hvac-log-app-improve — 发布说明", "updated": "2026-09-07T13:37:06-04:00", "change_type": "feature", "sort_key": "2026-09-07T13:37:06-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app-improve — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-106</span> · 更新: 2026-09-07T13:37:06-04:00</p>
+<h3>补上设备与工种维度</h3>
+<p>记录终于能回答「做过哪些系统、干过哪些技术动作」——2027 年初谈工钱和投简历 要用的正是这个。0.4.0 之前库里连一段活干的是什么都没有。</p>
+<p>- <code>system_type</code> 词表 15 条，<code>label_en</code> 供简历与面试直接引用   （"Walk-in Cooler/Freezer"）；<code>work_type</code> 词表 5 条 - <code>segment_system</code> 多对多：一趟同时看冷库和制冰机是常事 - <code>work_segment</code> 加 <code>work_code</code> 与 <code>equipment_note</code>；<code>work_day</code> 加 <code>exertion</code> - <code>equipment.eq_type</code> 由 CHECK 词表升格为 <code>system_type</code> 外键 - 第 9 个 tab「系统经历」与 <code>analyze.py systems</code> 查询</p>
+<h3>修掉全应用两套时薪口径</h3>
+<p>0.4.0 里这个除法写了两遍：</p>
+<p>``<code> 日历页    应得 ÷ 当日实际工时      → $11.76 行情卡片  day_rate ÷ typical_hours → $12.50   ← 名义值，写死 8 小时 </code>``</p>
+<p>现在两处共用同一个函数，卡片上显示的是<strong>实际时薪</strong>。名义值降级为 <code>nominal_hourly</code> 继续显示——「约定 8 小时 vs 实际干了 8.5 小时」这个差额 本身就是谈工钱的材料。</p>
+<h3>修掉一个 0.4.0 起就在的静默数据丢失</h3>
+<p>日历页保存一天时前端只回传 5 个字段，而写入口是整天替换，于是 <code>import.py</code> 写好的 <code>role</code> 和 <code>site_code</code> 每保存一次就没了。现在读到什么就回传什么。</p>
+<h3>身体预警</h3>
+<p>ACWR 之外并列两条当天就能用的预警：连续出工 ≥ 5 天、近 14 天单日超 9 小时的次数。 ACWR 要攒满 28 天才算得出，而且它衡量的是训练量，这行的伤害主要来自单次动作。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
