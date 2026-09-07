@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(hvac-log): 接入 icon-toolkit 图标（冰蓝雪花 favicon） · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-272", "title": "feat(hvac-log): 接入 icon-toolkit 图标（冰蓝雪花 favicon）", "updated": "2026-09-07T05:09:43-04:00", "change_type": "feature", "sort_key": "2026-09-07T05:09:43-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(hvac-log): 接入 icon-toolkit 图标（冰蓝雪花 favicon）</h1>
+<p class="updated"><span class="entry-case-id">PR-272</span> · 更新: 2026-09-07T05:09:43-04:00</p>
+<p>把 hvac-log 的 favicon 从内联 🔧 emoji 换成 icon-toolkit 统一规范的图标。</p>
+<h2>图标</h2>
+<p>底 <code>#0c1c2c</code>，符号 <code>#7fd6f5</code>，六角雪花。512×512，内缩外框 <code>420x420+46+46</code>（与规范实测值逐像素一致），竖直渐变按规范的每通道 <code>+22</code>/<code>-14</code>。</p>
+<p>配色不是拍的：从 <code>icons/</code> 里 27 个既有 PNG 反推出真实色相后算最大空隙选的。冷色区最优是 274°（紫罗兰，17° 余量），全环最优是 112°（春绿，29°），但前者语义偏、后者的圆环加放射刻度会被读成"太阳/亮度"。最终选了语义最准的冰蓝——雪花的放射对称在这 27 个图标里形状独一无二，即使色相离 <code>daily_checkin</code> 只有 7°，缩到 Dock 尺寸也不会认错。</p>
+<h2>diff 为什么这么大</h2>
+<p><code>apply_icons.py</code> 以 base64 内嵌，且 <code>rel="icon"</code> 和 <code>apple-touch-icon</code> <strong>各存一份</strong>同样的 30912 字节，所以 <code>index.html</code> 从 2.9K 涨到 68K。这是该工具的既定行为。</p>
+<p>hvac-log 是第一个 <code>html_path</code> 指向 git 仓库的 app——其余 26 条都指向 <code>~/toolbox-data/</code> 或 <code>~/toolboxes/</code>。副作用是以后每次换图标都会在产品仓库产生一次 62K 的 base64 diff。如果觉得不划算，替代方案是把 PNG 放进 <code>static/</code> 用路径引用（1 行 diff），但那会偏离 icon-toolkit "单文件可携带"的惯例——不过那个惯例的前提（HTML 复制到别处不丢图标）对 hvac-log 本来就不成立，它依赖整个 <code>static/</code> 和 <code>serve.py</code>。</p>
+<h2>顺带修掉一个会让接入失效的问题</h2>
+<p>原第 7 行的 emoji favicon 排在注入块<strong>之后</strong>，留着会盖过新图标。已删除，现在文件里只有 1 个 <code>rel="icon"</code>。</p>
+<h2>验证</h2>
+<ul><li>base64 解码后与源 PNG 字节级一致</li><li><code>APP-ICON-START/END</code> marker 已写入，下次更新走替换而非叠加</li></ul>
+<h2>注意</h2>
+<p>图标源文件 <code>icons/hvac_log.png</code> 在 <code>~/toolbox-data/icon-toolkit/</code>（不受版本控制），所以本文件里的 base64 是这个图标在 git 里的唯一记录。</p>
+<p>合并后需 <code>mk serve stop hvac_log &amp;&amp; mk serve start hvac_log</code> 才生效——HTML 是读进内存的常量。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
