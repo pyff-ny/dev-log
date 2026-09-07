@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac-log): 雪花图案放大，符号占比 62.4% → 73.8% · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-273", "title": "fix(hvac-log): 雪花图案放大，符号占比 62.4% → 73.8%", "updated": "2026-09-07T05:18:26-04:00", "change_type": "fix", "sort_key": "2026-09-07T05:18:26-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac-log): 雪花图案放大，符号占比 62.4% → 73.8%</h1>
+<p class="updated"><span class="entry-case-id">PR-273</span> · 更新: 2026-09-07T05:18:26-04:00</p>
+<p>接 #272。那个 PR 合并时带的是初版图标，实际看下来图案偏小、边缘显空——本 PR 换成放大版。</p>
+<h2>为什么原来偏小</h2>
+<p>量了 <code>icons/</code> 里 27 个既有图标的符号包围盒占圆角矩形的比例：</p>
+<p>| | 符号占比 | 墨量 | |---|---|---| | 初版 | 62.4% | 13.1% | | <strong>本 PR</strong> | <strong>73.8%</strong> | <strong>23.3%</strong> | | 既有中位数 | 60.5% | — | | 既有上限 | 81.4%（life_fourier_mirror） | — |</p>
+<p>初版 62.4% 其实接近中位数，数字上不算小。问题在<strong>视觉重量</strong>：雪花是六条细线放射、中心还留空腔，同样占比下比 <code>daily_checkin</code> 的粗对勾、<code>case_manager</code> 的实心块稀疏得多，所以看着比数字更空。</p>
+<h2>改了什么</h2>
+<ul><li>stroke 3.2 → 4.6</li><li>半径 21.5 → 24.5</li><li>中心空腔归零（原来六线交汇处留的小洞在小尺寸下像瑕疵）</li></ul>
+<p>73.8% 仍在既有范围内，<code>bournebrain</code> 72.9%、<code>life_fourier_mirror</code> 81.4% 都与之相当或更大，不会显得突兀。</p>
+<p>外框仍是 <code>420x420+46+46</code>，与其余 27 个逐像素一致。</p>
+<h2>验证</h2>
+<ul><li>尺寸 512×512、内缩外框合规</li><li><code>apply_icons.py</code> 这次走的是「更新」分支（marker 生效），不是叠加</li><li>注入后文件里只有 1 个 <code>rel="icon"</code></li><li>base64 解码与 <code>icons/hvac_log.png</code> 字节级一致</li></ul>
+<p>diff 只有 2 行（base64 单行长文本）。</p>
+<p>合并后需 <code>mk serve stop hvac_log &amp;&amp; mk serve start hvac_log</code> 才生效。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
