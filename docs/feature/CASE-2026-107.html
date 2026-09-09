@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-todo-write — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-107", "title": "hvac-log-todo-write — 发布说明", "updated": "2026-09-08T21:17:41-04:00", "change_type": "feature", "sort_key": "2026-09-08T21:17:41-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-todo-write — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-107</span> · 更新: 2026-09-08T21:17:41-04:00</p>
+<h3>待办页终于能出队</h3>
+<p>「把不知道变成可处理的队列」是这一页存在的理由（DESIGN 附录四 §2）。 0.6.0 之前它只能入队：问题答了也划不掉，缺口解了还堆在那儿， 想改只能重跑一次完整的复盘导入。</p>
+<p>现在能就地结案，也能撤销：</p>
+<ul><li>未答问题 → 记下答案 / 作废；已答的可以退回未答</li><li>未解缺口 → 标记已解（六项受控词表 + 答案 + 日期）；已解的可以退回未解</li><li>两个新端点 <code>POST /api/question</code>、<code>POST /api/gap</code></li></ul>
+<p>分工一句话说得清：<strong>创建归复盘，结案归网页</strong>。题面、起因、关联的工单与部件 仍然只能走 <code>import.py</code>，网页递过去一律 400 并告诉你该走哪个入口。</p>
+<h3>「自己推的」标完仍然留在未解列表里</h3>
+<p>这是 DESIGN §2 的冻结判定，本次没改：<code>resolution</code> 选 <code>inferred</code> 时 <code>resolved=1</code> 也照样算未解。UI 会在你选中它的那一刻就说明这件事—— 不说的话，点完看到它还在列表里，只会以为按钮坏了。</p>
+<p>下拉不给默认值。在一套「自己推的不算数」的系统里，把答案来源默认成最强的 那一档（「问了师傅」）是最不该做的事。</p>
+<h3>顺带堵掉一条真实的数据丢失路径</h3>
+<p><code>import.py</code> 原先按日期<strong>无条件</strong>整片删 <code>question</code> 与 <code>learning_gap</code>， 不管 JSON 里有没有带这两批内容。开出结案入口之后，这就成了：</p>
+<p>&gt; 早上在待办页标了「已答」，晚上导入一份只写 <code>learnings</code> 的复盘 —— 早上标的没了。</p>
+<p><strong>这正是 0.4.0 为 <code>work_segment</code> 修过的同一个缺陷</strong>，修法照搬：复盘明确带了 <code>questions</code> / <code>learning_gaps</code> 才整片替换（那等于你主动重述当天的内容）， 没带就一个字节不动。</p>
+<p><code>--dry-run</code> 的预览跟着修好。不改的话，不带 <code>questions</code> 的导入会把现有条目 预告成「替换 → 0」——方向最坏的一种错：它告诉你会丢数据，而这条改动的核心 保证恰恰是不会丢。现在它如实显示「保留」。</p>
+<h3>备份分窗口</h3>
+<p>待办结案走独立的 <code>hvac-log-todo-&lt;时间戳&gt;.db</code>，最近 10 份，不与日历的 <code>hvac-log-day-*</code> 互挤。理由和 0.4.0 分出 <code>day</code> 窗口时一样：频率不同的操作 共用一个窗口时，高频的会把低频的快照挤出去。</p>
+<h3>顺带修好的两处</h3>
+<p>- <code>_translate</code> 的兜底原先匹配「任何 CHECK 约束失败」并返回一句日薪提示，   于是别的表违约都会收到完全无关的话——日历页的 <code>seg_type</code> 写错就会触发。 - README 的「八个页面」是 0.5.0 加第 9 个 tab 时漏改的。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
