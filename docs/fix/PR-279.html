@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac-log): --dry-run 预览的结果列统一为全库口径 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-279", "title": "fix(hvac-log): --dry-run 预览的结果列统一为全库口径", "updated": "2026-09-09T21:16:27-04:00", "change_type": "fix", "sort_key": "2026-09-09T21:16:27-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac-log): --dry-run 预览的结果列统一为全库口径</h1>
+<p class="updated"><span class="entry-case-id">PR-279</span> · 更新: 2026-09-09T21:16:27-04:00</p>
+<h2>问题</h2>
+<p><code>--dry-run</code> 预览的「结果」列把两个口径混在同一行：<code>before</code> 是全局 <code>SELECT count(*)</code>， 结果列却填当天要写的行数。多日库上每次导入都被预告成「整表将只剩这些行」。</p>
+<p>实测（库里已有 2026-09-05，导入 2026-09-08）：</p>
+<p>``<code>   session      1       1     替换      1     ← 实际会变成 2   learning     5       5     替换      5     ← 实际会变成 10   market_rate  1       0     替换      0     ← 实际仍是 1 </code>``</p>
+<p><code>write_all()</code> 本身是对的（只删当天），一条数据都不会丢——<strong>只有预览是错的</strong>。 但预览存在的理由正是让人在确认前看出数据丢失，现在它每次多日导入都在喊狼来了。</p>
+<p><code>kept</code> 分支在 0.4.0 / 0.6.0 已经为同一类问题修过两次，这次把最后那个 <code>else</code> 一起修完。</p>
+<h2>改法</h2>
+<p>统一为全库口径，按写入语义分三算：</p>
+<p>| 类别 | 表 | 结果 | |---|---|---| | <code>ACCUMULATING</code> ∪ <code>DAY_KEYED</code> | component_type, equipment, skill, session, work_day, job, skill_observation | 全库现有 + 其中新增 | | <code>kept</code> | 复盘没带对应键的 work_segment / question / learning_gap | 全库现有（原逻辑，未动） | | 其余按天替换 | learning, safety_observation, component_install, market_rate + 带了键的那三张 | 全库现有 − 当天现有 + 将写入 |</p>
+<p>- 新增 <code>DAY_KEYED</code>、<code>REPLACEABLE_DAY_COL</code> 与 <code>day_snapshot()</code> - <code>planned_new()</code> 扩展到日键四表；<code>planned_counts()</code> 收 <code>ref</code>，<code>component_install</code> /   <code>skill_observation</code> 按解析结果数（原先直接数 JSON 长度会高估） - 模块级分区 assert（7+3+4=14），以后加表漏归类直接在导入期报错 - 表头 <code>现有</code>/<code>结果</code> → <code>全库现有</code>/<code>全库结果</code>，并加一行口径说明 - <strong><code>write_all()</code> / <code>kept_tables()</code> / <code>CONDITIONAL_DAY_SCOPED</code> 一个字符未改</strong></p>
+<h2>验证</h2>
+<ul><li><code>pytest apps/hvac_log/tests/</code> — 基线 256 passed，改后 <strong>257 passed</strong></li><li>新增 <code>test_two_day_preview_matches_reality</code>：两日库，四类分支各覆盖至少一张表</li><li>手工两日复现：<strong>14/14 张表</strong>预览「全库结果」等于导入后真实 <code>count(*)</code></li><li>同日重导：预览正确显示无变化，与 <code>test_import_is_idempotent</code> 相符</li></ul>
+<h2>顺带暴露的既有缺陷（本 PR 不修）</h2>
+<p><code>component_install</code> 插入用 <code>c.get("install_date") or day</code>，<code>DELETE</code> 却按 <code>session_date</code> 清。 两者不一致时重复导入同一天会不断加行。新公式会<strong>如实预测</strong>这个增长（同日重导显示 2 → 3， 实测也是 3），以前的预览把它藏住了。要修的话另开一轮。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
