@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac-log): eq_type 枚举与 system_type 词表统一，加漂移锁（0.6.1） · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-278", "title": "fix(hvac-log): eq_type 枚举与 system_type 词表统一，加漂移锁（0.6.1）", "updated": "2026-09-09T21:17:20-04:00", "change_type": "fix", "sort_key": "2026-09-09T21:17:20-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac-log): eq_type 枚举与 system_type 词表统一，加漂移锁（0.6.1）</h1>
+<p class="updated"><span class="entry-case-id">PR-278</span> · 更新: 2026-09-09T21:17:20-04:00</p>
+<h2>问题</h2>
+<p>0.5.0（<code>a64b575</code>，CASE-2026-106）在<strong>同一个 commit</strong> 里做了三件事：建 <code>system_type</code> 15 值词表、把 <code>equipment.eq_type</code> 从 <code>CHECK</code> 词表升格成 <code>REFERENCES system_type(code)</code>、给 <code>entry.schema.json</code> 加了 15 值的 <code>segments[].systems</code> 枚举——却漏改了同一个文件里几行之下的 <code>eq_type</code> 9 值枚举。那 9 个值是旧 <code>CHECK</code> 列表的原样残留。</p>
+<p>结果是 <code>window</code>、<code>ductless_mini</code>、<code>central</code>、<code>heat_pump</code>、<code>furnace</code>、<code>display_case</code> 六个码<strong>库里认、schema 不认</strong>。DDL 是外键，拦住导入的只有 JSON schema 这一份手抄词表。同一份 schema 里 <code>systems</code> 允许 <code>display_case</code>、<code>eq_type</code> 不允许，本身就自相矛盾。</p>
+<p>2026-09-08 撞上：两台前场透明冷藏展示柜导入报</p>
+<p>``<code> equipment[0].eq_type: 'display_case' is not one of [...] </code>``</p>
+<p>只能记成 <code>reachin</code>（形态是错的）。同一天的 <code>segment_system</code> 却按 <code>display_case</code> 记了，<code>analyze.py</code> 的 <code>eq_type_mismatches</code> 因此常亮两条。</p>
+<h2>改法</h2>
+<p>不是再粘六个字符串：</p>
+<ul><li><code>$defs.system_code</code> 一处定义 15 个码，<code>eq_type</code> 与 <code>segments[].systems</code> 都 <code>$ref</code> 它，文件内两份并成一份</li><li>新增 <code>tests/test_vocab_drift.py</code> 焊死跨文件那几份：<code>schema.sql</code> 的 <code>system_type</code> 种子 ↔ <code>$defs.system_code</code> ↔ <code>app.js</code> 的 <code>SYSTEM_ZH</code>；<code>work_type</code> / <code>work_code</code> / <code>WORK_ZH</code> 同结构一并锁上（目前没漂，锁住不让它漂）</li><li>两条「文本 vs 实况」兜底：建出来的库里 <code>system_type</code> / <code>work_type</code> 真的要有那些行，光文本对得上不算数</li><li><code>migrate_0_5_0.py</code> 的 <code>SYSTEM_TYPE_SEED</code> <strong>故意不进锁</strong>：迁移必须永远描述它当时真正做了什么，跟着后来的词表走反而是错的</li></ul>
+<p><code>$ref</code> 之后错误信息与退出码原样保留，由 <code>test_unknown_eq_type_is_still_rc2_with_precise_path</code> 实测守住：仍是 RC=2 + <code>equipment[0].eq_type</code> 精确路径，只是候选列表从 9 个变 15 个。</p>
+<h2>顺带</h2>
+<p><code>BK-FAST-01</code> / <code>CT-SHOP-01</code> 两行设备数据已改回 <code>display_case</code>、剥掉替代说明（不在本 PR 里，是实库操作；改前打了 <code>keep=None</code> 的永久备份）。注意 <code>import.py</code> 的 equipment upsert 键含 <code>eq_type</code>，所以必须先改库再改归档 JSON——反过来重导会长出重复行而不是修正。</p>
+<h2>验收</h2>
+<p>| 项 | 结果 | |---|---| | <code>pytest tests/test_vocab_drift.py</code> | 6 passed | | <code>pytest tests/</code> | 264 passed（0.6.0 的 256 条无回归） | | <code>pytest tests/test_validation.py</code> | 12 passed | | <code>eq_type_mismatches</code> 对实库 | 0 行（修复前 2 行） | | 改好后的 session JSON <code>--dry-run</code> 重导 | RC=0，equipment 新增 0 行，幂等 | | 人为删掉 <code>$defs</code> 一个码 | 锁立刻变红 |</p>
+<h2>没做的两件事</h2>
+<ul><li><code>releases/v0.6.1/</code> 快照没建：快照只装 <code>analyze.py</code> / <code>serve.py</code> / <code>static/</code> 五个文件，本次一个都没碰，建出来会是 <code>v0.6.0</code> 的逐字节拷贝。README 已把这条真实规则写清楚。</li><li><code>DESIGN.md</code> §10.1（D-106-D，这个 bug 的出生地）没加追记——不在冻结的文件清单里。</li></ul>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
