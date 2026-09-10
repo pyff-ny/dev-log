@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac-log): component_install 按当天工单归属，不再重复插入 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-282", "title": "fix(hvac-log): component_install 按当天工单归属，不再重复插入", "updated": "2026-09-09T21:47:16-04:00", "change_type": "fix", "sort_key": "2026-09-09T21:47:16-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac-log): component_install 按当天工单归属，不再重复插入</h1>
+<p class="updated"><span class="entry-case-id">PR-282</span> · 更新: 2026-09-09T21:47:16-04:00</p>
+<h2>问题</h2>
+<p><code>component_install.install_date</code> 是<strong>事件</strong>日期——今天的复盘可以补录一次历史更换， schema 也允许它为空或为别的日子。但 <code>write_all()</code> 的 DELETE 一直拿它当<strong>导入</strong>日期用：</p>
+<p>``<code>python INSERT ... c.get("install_date") or day      # 事件日期 DELETE FROM component_install WHERE install_date = ?   # (day,) ← 当导入日期用 </code>``</p>
+<p>两个日期一旦不同，那行永远删不掉又会被重插，<strong>每导一次同一天就多一行</strong>。</p>
+<p>复现（<code>install_date=2026-08-01</code>，<code>session_date=2026-09-05</code>）：</p>
+<p>``<code> 第1次: component_install = 1 第2次: component_install = 2    ← 应为 1 第3次: component_install = 3 </code>``</p>
+<p>真实库目前 2 行、均有 <code>job_id</code>、<code>install_date</code> 都等于各自 session_date， <strong>没有已产生的重复</strong>——这是潜伏缺陷，不需要数据修复。</p>
+<h2>改法</h2>
+<p>表里没有 provenance 列，但不必加：<code>job.job_date</code> 就是 <code>session_date</code>，而 <code>job_date</code> 是 job upsert 键的一部分、<strong>从不变更</strong>，所以 <code>component_install.job_id</code> 永远指向写它 那次导入当天的 job。<code>job_id IN (当天的 job)</code> 就是精确的「这次导入写的行」。</p>
+<p>``<code>python COMPONENT_INSTALL_OWNED = (     "install_date = ? OR job_id IN (SELECT job_id FROM job WHERE job_date = ?)") </code>``</p>
+<p>- <code>write_all()</code> 的 DELETE 与预览的 <code>day_snapshot()</code> <strong>共用同一份谓词</strong>，   避免读写漂移导致预览重新算错（这正是 #279 复审留下的那条风险） - <code>REPLACEABLE_OWNED</code> 改存 <code>(谓词, 参数个数)</code>，不再靠数问号推参数 - 两条都不沾的条目（无可解析 <code>job_seq</code> 且 <code>install_date</code> 不是当天）仍无法幂等，   改为<strong>逐条告警</strong>，写入路径与 <code>--dry-run</code> 共用同一句措辞</p>
+<p>不改 schema、不写 migration、不动 VERSION。</p>
+<h2>归属安全性核对</h2>
+<p>加宽 DELETE 是本次最高风险处，逐条核过：</p>
+<p>- <strong>语句顺序</strong>：job upsert → <code>ref["jobs"]</code> 重解析 → DELETE → INSERT ✓ - <strong>跨天误删</strong>：09-05 写的行 <code>job_id</code> 指向 09-05 的 job，导 09-08 时不匹配 ✓ - <strong>provenance 不漂</strong>：<code>job_date</code> 是 upsert 键的一部分，永不变更 ✓ - <strong>第二写入口</strong>：<code>serve.py</code> 不写此表（只写 work_day / work_segment /   segment_system / comp_period / question / learning_gap），   无 0.4.0/0.6.0 那类「网页记的被复盘冲掉」路径 ✓</p>
+<h2>验证</h2>
+<p>- <code>pytest apps/hvac_log/tests/</code> — 基线 270 passed，改后 <strong>272 passed</strong> - 新增 <code>test_explicit_install_date_stays_idempotent</code>、   <code>test_unownable_install_warns_and_preview_tells_the_truth</code> - 手工：历史补录连导 4 次，行数恒为 1 - 手工：两日库 <strong>14/14</strong> 张表预览仍等于实况（#279 的回归锁未被破坏）</p>
+<h2>已知残留</h2>
+<p>无 <code>job_seq</code> 的历史补录目前是死路：告警让人补 <code>job_seq</code>，但如果那天本来就没有工单， 用户补不了，行仍会每次多一份。这是本方案固有的边界——真正的解是给表加 provenance 列 （需要 migration，属 F3）。样例和真实库都不存在这种条目，暂为理论缺口。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
