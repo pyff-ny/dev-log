@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app-测试锁 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-108", "title": "hvac-log-app-测试锁 — 发布说明", "updated": "2026-09-09T21:36:17-04:00", "change_type": "improve", "sort_key": "2026-09-09T21:36:17-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app-测试锁 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-108</span> · 更新: 2026-09-09T21:36:17-04:00</p>
+<h3>撤销不再是一道记忆力测验</h3>
+<p>0.6.0 的两个待办结案端点是<strong>整块替换</strong>：payload 里没传的字段一律置 NULL。 代价藏在「撤销」上——要撤销，调用方必须自己重建一份改之前的完整快照回传， 记漏一个字段就等于删数据。</p>
+<p>CASE-2026-107 在 Stage 2b 做了三轮独立只读评审，每轮都抓到东西， <strong>三个缺陷全部落在 <code>static/app.js</code></strong>，而且全是同一件事的变体：</p>
+<p>1. 「退回未解」只发 <code>{gap_id, resolved: 0}</code>，把 <code>learning_gap.answer</code> 一并清空    ——那是「当时的答案」，未解状态下合法且由 <code>import.py</code> 写。网页删掉了复盘写的数据。 2. 改成回传整块之后，遇到 <code>import.py</code> 写得出的 <code>resolved=0</code> 且 <code>resolution</code>    非空的行，原样回传会被写端点自己的校验拒掉，而撤销跑在 toast 回调里没人接住。 3. 400 文案还在教人用那份会丢数据的 payload。</p>
+<p>0.7.0 把「还原到先前状态」的正确性从调用方收回服务端：</p>
+<p>``` 键缺席        →「没提到」，不写该列 键在场为 null →「想清空」，写 NULL 键在场有值    →「改成这个」，校验后写入 键在场且非法  → 400，一条没放宽</p>
+<p>不变量优先于「缺席不写」：   status='open' ⇒ 清答案三件套   resolved=0    ⇒ 清 resolution / resolved_date   而 learning_gap.answer 不受 resolved 约束——缺席即不动 ```</p>
+<p>于是「退回未解」现在只需要发 <code>{gap_id, resolved: 0}</code>，<strong>前端没机会写错</strong>。 「作废」同理，不必再把答案三件套原样搬运一遍。</p>
+<h3>推翻一条自己写下的理由</h3>
+<p>0.6.0 选整块替换是有理由的，而且写在测试的 docstring 里：</p>
+<p>&gt; 部分更新分不清「没提到」和「想清空」，写错的 <code>answered_by</code> 就再也改不回空。</p>
+<p>这条理由不成立。<strong>JSON 本来就分得清</strong>——<code>k in payload</code> 与 <code>payload.get(k)</code> 是 两件事，0.6.0 只是没用上前者。<code>test_explicit_null_still_clears</code> 就是为回答它 而写的：显式传 <code>null</code> 照样把字段清回空。</p>
+<h3><code>app.js</code> 有了第一把测试锁</h3>
+<p>躲不掉的那部分组装逻辑——「改解决方式」的撤销仍需回传整块并夹紧，因为 <code>learning_gap</code> 没有 CHECK 把 <code>resolved</code> 与 <code>resolution</code> 绑住，<code>import.py</code> 写得出写端点自己不收的行——抽进了 <code>static/todo_payload.js</code>，用 node 内建的 <code>node:test</code> 锁住：</p>
+<p>``<code>bash node --test apps/hvac_log/tests/js/*.test.js </code>``</p>
+<p><strong>零 npm 包、没有 <code>package.json</code>、没有 <code>node_modules</code>。</strong> 这个文件里一行都不碰 DOM，浏览器按普通 <code>&lt;script&gt;</code> 加载、node 按 CJS <code>require</code> 加载，两边共用同一份 ——测的就是页面真正跑的那份代码。应用本身跑起来一点都不需要 node。</p>
+<p>新语义带来一个旧语义下不存在的新陷阱：<code>JSON.stringify</code> 会丢掉值为 <code>undefined</code> 的键，而丢键现在意味着「不动这一列」，不再是「清空」。四条锁专门盯着它。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
