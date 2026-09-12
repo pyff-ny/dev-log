@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>hvac-log-app-photo — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-109", "title": "hvac-log-app-photo — 发布说明", "updated": "2026-09-12T16:57:36-04:00", "change_type": "feature", "sort_key": "2026-09-12T16:57:36-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>hvac-log-app-photo — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-109</span> · 更新: 2026-09-12T16:57:36-04:00</p>
+<h3>文字旁边终于有了实物凭据</h3>
+<p><code>job</code> 表存着一次维修的全部文字：<code>symptom</code> → <code>diagnosis</code> → <code>resolution</code> → <code>parts_replaced</code>。这四句话是这套系统里信息密度最高的东西，也是明年面试要用的 话术底稿。但它们全是<strong>事后回忆写下的转述</strong>。</p>
+<p>转述会褪色，也会在无意中被后来的理解改写。「压缩机接线盒 C 端烧黑」半年后再读， 烧成什么样已经想不起来了；「铭牌显示 R-404A，3.2 吨」——铭牌照片没留，型号反查 不回去。</p>
+<p>0.8.0 给工单加照片。时间线页把一天的工单展开之后，每单下面是一排现场照片， 加一个「＋照片」按钮。点缩略图放大，放大层里按 <code>Delete</code> 删掉、<code>Esc</code> 关掉。 每张可以带一句说明、一个类型（症状 / 铭牌 / 拆解中 / 换下的件 / 完工 / 其他）， 以及可选的关联部件。</p>
+<p><strong>挂在 <code>job</code> 而不是 <code>work_day</code>。</strong> 一天跑三个活，一列「今天的照片」说不清是哪台 机器的哪个毛病。库里原有的 <code>work_day.photo_path</code> 是 0.1.0 留下的天级单列， 展示层九页从没读过，本版起标为 compatibility-only——不删，也不用。</p>
+<h3>库里只存路径，盘上只存原图</h3>
+<p>照片进 <code>~/toolbox-data/db/hvac-log/photos/</code>，按 <code>YYYY-MM/</code> 分目录，库里存的是 <strong>相对路径</strong>加 sha256。</p>
+<p>BLOB 进库这条路走不通：写入前的自动备份是 <code>shutil.copy2</code> 整个库文件，库涨到几 GB 之后，日历上点一天开工要拷几 GB。存绝对路径则是把真相托付给一个随时会变的东西 ——照片一挪一删就断链。存相对路径，库搬家或换机器都不用改数据。</p>
+<p>文件名嵌内容 hash 前 8 位，配上 <code>UNIQUE(job_id, sha256)</code>：同一张图重传同一个工单 直接把既有那行还回去，不写盘也不插行。不会再出现 <code>IMG_4821 2.jpg</code>。</p>
+<h3>上传不走 multipart</h3>
+<p><code>cgi</code> 模块在 Python 3.13 被移除，本机 3.14 实测已经 <code>import</code> 不到。标准库里因此 没有现成的 multipart 解析器，而手写边界解析是这条路径上唯一真正容易出 bug 的 地方——多字节边界、CRLF、尾部 <code>--</code>，每一处写错都是静默地少几个字节。</p>
+<p>改发 JSON + base64，两者都还在标准库里。代价是传输体积涨 4/3，在 15 MB 上限和 本机传输下无所谓。</p>
+<p><strong>类型只认文件开头那几个字节。</strong> 前端声称的 mime 和文件名后缀一律不作数—— 浏览器给的 <code>File.type</code> 本来就时常为空。HEIC 因此拦得住，并且给的是一句照着做得了 的话：把相机设成「兼容性最高」，或者导出时选 JPEG。不转码：要么上 Pillow， 要么 subprocess 调 <code>sips</code>，两条都配不上「改一个相机设置」这个代价。</p>
+<h3>落盘顺序本身是契约</h3>
+<p>``<code> 写 .tmp/ → fsync → INSERT → COMMIT → os.replace 到最终路径 </code>``</p>
+<p><strong>先落库再改名</strong>，不是反过来。两种不一致的代价完全不对称：库里有行而盘上没图， 界面上那张图裂开，看得见也补得回来；盘上有图而库里没行，没有任何界面会显示它， 永远不会有人发现。</p>
+<p>删照片是软删，文件移进 <code>photos/.trash/</code>，那个目录不自动清理——误删一张现场照， 重拍是不可能的。</p>
+<h3>顺带补上一把从来没写过的锁</h3>
+<p>README 从 0.3.0 起就写着「<code>analyze.py hours --json</code> 和网页工时页永远给出同一个数 ——<code>test_serve.py</code> 锁住这条」。<strong>那把锁其实不存在。</strong> 既有测试只断言响应形状 （状态码、<code>query</code> 名、<code>rows</code> 是不是 list），<code>test_serve.py</code> 文件头自己还写着 「不重复锁数值」，全仓没有任何一处把 CLI 的字节和 HTTP 的字节比过。</p>
+<p>架构上一致性是真的（两边共走 <code>run_query</code> 唯一入口），但架构保证不了未来。 本版把 timeline 和七个不依赖参考日的查询都焊死。</p>
+<h3>两次被自己的评审打回</h3>
+<p>第一轮 <code>DO NOT MERGE</code>：字段白名单收下了 <code>filename</code> 和 <code>mime</code>，而写函数一次都没读 过它们，前端却每次都在发。收下再忽略等于静默丢弃调用方给的东西——这正是这套系统 在《字段归属》里写明、并且 0.4.0 专门为它改过 <code>import.py</code> 的规矩的反面。</p>
+<p>第二轮 <code>BLOCKED</code>：上一轮的修复让两条测试的 400 改从白名单来，它们仍然绿着， 却不再守着各自那条路径。修的过程中又抓到第三条同族假通过——那条与本次改动无关， 是一开始就写错的。</p>
+<p>据此定下规矩：每一条断言 400 的用例，都必须同时断言错误信息来自它想测的那道闸。 只断言状态码，等于把「这条路径还有人守着」托付给闸门的相对顺序，而顺序是会变的， 变了也不会有人收到通知。</p>
+<p>测试从 272 涨到 <strong>348</strong>（pytest），12 涨到 <strong>40</strong>（node）。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
