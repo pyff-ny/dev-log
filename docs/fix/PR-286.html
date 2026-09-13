@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac_log): 照片放大层默认隐藏，不再遮住整页 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-286", "title": "fix(hvac_log): 照片放大层默认隐藏，不再遮住整页", "updated": "2026-09-13T11:58:10-04:00", "change_type": "fix", "sort_key": "2026-09-13T11:58:10-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac_log): 照片放大层默认隐藏，不再遮住整页</h1>
+<p class="updated"><span class="entry-case-id">PR-286</span> · 更新: 2026-09-13T11:58:10-04:00</p>
+<h2>现象</h2>
+<p>重启 hvac-log 服务、第一次加载 0.8.0 前端后，整页被一层深色遮罩盖住，右上角有个 ✕，所有点击都没反应。</p>
+<h2>根因</h2>
+<p>0.8.0（182e0b8）给 <code>.lightbox</code> 写了 <code>display: flex</code>。作者样式表优先于浏览器给 <code>[hidden]</code> 的 <code>display: none</code>，所以 <code>#lightbox</code> 带着 <code>hidden</code> 属性照样显示，成了一层 <code>position: fixed; inset: 0; z-index: 50</code> 的 88% 深色遮罩。关闭函数只把 <code>hidden</code> 设成 <code>true</code>，而它本来就是 <code>true</code>，所以点 ✕、按 Esc 都没用。</p>
+<p><code>style.css</code> 里 <code>.toast</code> 早就处理过同一个问题（「display:flex 会盖掉 hidden 属性自带的 display:none」），<code>.lightbox</code> 漏了这一条。</p>
+<h2>改动</h2>
+<ul><li><code>apps/hvac_log/static/style.css</code>：加 <code>.lightbox[hidden] { display: none; }</code></li><li><code>apps/hvac_log/tests/test_static_hidden.py</code>（新增）：回归锁。不认具体元素——<code>index.html</code> 里带 <code>hidden</code> 属性的元素，只要它的 class 在 <code>style.css</code> 里有非 none 的 <code>display</code>，就必须有对应的 <code>[hidden]</code> 规则。</li></ul>
+<h2>证据</h2>
+<ul><li>修前：新测试失败，只报 <code>&lt;div class="lightbox" hidden&gt;：.lightbox 设了 display: flex，缺 .lightbox[hidden]</code></li><li>修后：新测试通过；<code>pytest apps/hvac_log/tests</code> 全量 349 passed</li><li>浏览器（线上 8655，未重启服务）：<code>#lightbox</code> hidden=true、computed display=none，页面中心最上层元素为日历格子，控制台无报错</li></ul>
+<h2>未包含</h2>
+<ul><li>VERSION 0.8.1 与 README 版本历史，另行处理</li></ul>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
