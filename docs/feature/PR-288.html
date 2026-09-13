@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>feat(hvac_log): iPhone HEIC 照片直接上传，服务端 sips 转 JPEG（0.9.0） · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-288", "title": "feat(hvac_log): iPhone HEIC 照片直接上传，服务端 sips 转 JPEG（0.9.0）", "updated": "2026-09-13T14:43:33-04:00", "change_type": "feature", "sort_key": "2026-09-13T14:43:33-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>feat(hvac_log): iPhone HEIC 照片直接上传，服务端 sips 转 JPEG（0.9.0）</h1>
+<p class="updated"><span class="entry-case-id">PR-288</span> · 更新: 2026-09-13T14:43:33-04:00</p>
+<p>Case: 无（Jia 2026-09-13 决定不建；F3/C2 流程在会话内完成，Stage 4 九份文档 N/A）</p>
+<h2>为什么</h2>
+<p>2026-09-13 一张 HEIC 改了 <code>.jpg</code> 后缀去传：前端按后缀放行，服务端看文件头认出 HEIC 回 400。拒因只在页面顶上的 toast 闪 6 秒，而上传面板在时间线靠下的位置——人以为传上了，库里一行都没有，日志也只有一个 400。0.8.0 不收 HEIC 的前提是「改相机设置就好」，但手机里已经拍下的照片全是 HEIC。</p>
+<h2>改了什么</h2>
+<ul><li><strong>服务端转码</strong>（<code>serve.py</code>）：<code>sniff_mime</code> 认出 HEIC → 新增 <code>heic_to_jpeg()</code> 调 macOS 自带 <code>/usr/bin/sips</code> 转 JPEG → 走原有落盘流程。库和盘上只存 JPEG。</li><li><code>sha256</code> 与文件名摘要取<strong>上传原字节</strong>（sips 输出不保证逐字节稳定），先查幂等再转码。</li><li>解不开的 HEIC → 400「这张 HEIC 转不了」；sips 不在 / 跑不起来 / 超 60 秒 → 500（RC_IO）。临时文件任何路径都清干净。</li><li><strong>拒因进日志</strong>：写端点的 400 记 <code>WARNING … 被拒（400）：&lt;原因&gt;</code>（截 500 字），500 记 <code>ERROR</code>。</li><li><strong>前端</strong>：<code>checkFile</code> 放行 <code>.heic/.heif</code>；上传失败原因写进面板内红色提示，下次点「上传」才清。</li><li><strong>文档/版本</strong>：VERSION 0.9.0、README、DESIGN §11.5 注记 + 新 §11.10；<code>releases/v0.9.0/</code> 快照。</li></ul>
+<h2>不变量</h2>
+<p><code>job_photo</code> schema 与 <code>mime</code> CHECK 未改、无迁移（0.8.x 读得了 0.9.0 存的图）；响应 JSON 形状不变；其余写端点 <code>MAX_BODY</code> 256 KiB 不变；<code>serve.py</code> 退出码 2/4/130 不变；零新依赖。</p>
+<h2>验证</h2>
+<ul><li><code>python3 -m pytest apps/hvac_log/tests -q</code> → 366 passed（基线 356，新增 10；sips 用例在本机未 skip）</li><li><code>node --test apps/hvac_log/tests/js/*.test.js</code> → 42/42</li><li>改动文件恰为声明的 16 个；<code>releases/v0.9.0/</code> 与现行文件 7 个逐字节 <code>cmp</code> 相同</li><li>浏览器（临时服务 + 合成库）：改名的假 HEIC → 面板内错误 7 秒后仍在；真 HEIC → 缩略图 → 点开 lightbox</li><li>独立只读 code review 两轮：无 Critical / Important</li></ul>
+<h2>合并后（真终端，Jia）</h2>
+<p>主树 <code>git status</code> 确认后再 pull → <code>mk serve stop hvac_log &amp;&amp; mk serve start hvac_log</code> → 用一张真实 iPhone HEIC 验：缩略图、点开大图、方向正确、GPS EXIF 是否保留。</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
