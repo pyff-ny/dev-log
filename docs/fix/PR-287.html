@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>fix(hvac_log): 0.8.1 reject stale calendar day saves (base_rev / 409) · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "PR-287", "title": "fix(hvac_log): 0.8.1 reject stale calendar day saves (base_rev / 409)", "updated": "2026-09-13T13:16:14-04:00", "change_type": "fix", "sort_key": "2026-09-13T13:16:14-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>fix(hvac_log): 0.8.1 reject stale calendar day saves (base_rev / 409)</h1>
+<p class="updated"><span class="entry-case-id">PR-287</span> · 更新: 2026-09-13T13:16:14-04:00</p>
+<h2>问题</h2>
+<p>2026-09-13 实际发生的丢失更新：日历页在 <code>import.py</code> 之前就开着，导入给 2026-09-11 写进 21 段工段和长摘要；十秒后在旧侧栏只改了当日强度点保存（log <code>10:48:21 POST /api/day 200</code>），页面回传打开时的「开工」和 <code>segments: []</code>：</p>
+<ul><li><code>serve.py</code> <code>COALESCE(?, work_summary)</code> 只防 <code>null</code> 不防旧值 → 摘要被改回「开工」</li><li><code>segments</code> 非 <code>None</code> → 整天 <code>DELETE</code> → 21 段全删</li><li>没有任何陈旧检查</li></ul>
+<h2>修法</h2>
+<ul><li><strong>后端乐观并发</strong>：<code>analyze.day_revs()</code> 按天算内容指纹（<code>write_day</code> 能覆盖的 5 列 + 当天全部工段与系统类型，不含 <code>seg_id</code>）。<code>/api/calendar</code> 每行带 <code>rev</code>；<code>POST /api/day</code> 收到 <code>base_rev</code> 就在 <code>BEGIN IMMEDIATE</code> 里比对，不一致回 <strong>409</strong>，一个字节不写；成功响应带新 <code>rev</code>。</li><li><strong>前端只送改过的字段</strong>：摘要没改不送、工段没动不送；侧栏保存带 <code>base_rev</code>，点空格子带 <code>base_rev: null</code>；409 时先重新拉库重画侧栏再提示。</li><li>契约只做加法：不带 <code>base_rev</code> = 0.8.0 老语义；<code>analyze.py calendar</code> 人类输出逐字节不变，JSON 只多 <code>rev</code>。无 schema 变化、无迁移。VERSION → 0.8.1。</li></ul>
+<h2>证据</h2>
+<p>| | | |---|---| | 复现（修前，tmp 库） | <code>LOST_UPDATE work_summary='开工' segments=0 exertion=4</code>，RC=1 | | 新测试 R1–R7（修前） | 7 failed | | 全量测试 | <code>pytest apps/hvac_log/tests</code> 356 passed | | CLI 兼容 | <code>analyze.py calendar</code> base vs branch：人类输出 <code>cmp</code> RC=0；JSON 去掉 <code>rev</code> 后 <code>cmp</code> RC=0 | | 浏览器端到端（tmp 库） | 旧侧栏保存 → 409 + 重画（摘要与 5 段完好，exertion 未写）；重填再存 → 200，exertion=4，摘要与 5 段完好 |</p>
+<p>全程只用 tmp 库，未触碰真实库；09-11 数据另行重跑 <code>import.py</code> 恢复。</p>
+<h2>已知限制（README 已写）</h2>
+<ul><li>不带 <code>base_rev</code> 的请求仍是老语义</li><li>409 后侧栏未保存的输入要重填</li><li>409 也会留一份 <code>day</code> 滚动备份</li></ul>
+<h2>未包含</h2>
+<ul><li><code>releases/v0.8.1/</code> 快照（未在本次批准范围内）</li><li>既有问题另议：日历工段保存会丢 <code>job_id</code>/<code>eq_id</code>；<code>test_pay_query_survives_whatever_write_comp_accepts</code> 依赖测试收集顺序</li></ul>
+<p>Case：未建（Jia 决定）</p>
+<p>🤖 Generated with <a href="https://claude.com/claude-code">Claude Code</a></p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
