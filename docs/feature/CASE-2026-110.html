@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>app-mk-macos-统计时间 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-110", "title": "app-mk-macos-统计时间 — 发布说明", "updated": "2026-09-17T09:26:36-04:00", "change_type": "feature", "sort_key": "2026-09-17T09:26:36-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>app-mk-macos-统计时间 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-110</span> · 更新: 2026-09-17T09:26:36-04:00</p>
+<h3>时间到底花在了哪里</h3>
+<p>macOS 自带的屏幕使用时间能看，但数据拿不出来：底层的 knowledgeC.db 和 Biome 流受系统隐私保护，实测读取就是 <code>Operation not permitted</code>，格式也不公开。想把「这一周在 Terminal、Claude、Chrome 里各待了多久，都集中在几点」和自己的 mk serve 应用放在一起看，只能自己采。</p>
+<p><code>app_usage</code> 在 serve.py 里跑一个后台线程，每 5 秒看一眼前台是谁：</p>
+<ul><li><strong>macOS 应用</strong>：<code>lsappinfo</code> 读前台应用名和 bundle id；<code>ioreg</code> 读距离上一次键鼠操作过了多久。</li><li><strong>mk serve 应用</strong>：前台是 Safari 或 Chrome 时，用 <code>osascript</code> 读当前标签页地址。只要是 <code>127.0.0.1</code> / <code>localhost</code> 加注册表里的端口，就记成对应的 app（hvac_log、mk_hub……）。<strong>地址只在内存里比对一次，不进数据库、不进日志、不出现在任何接口里。</strong></li></ul>
+<p>连续的采样合并成「会话」存进 <code>~/toolbox-data/app_usage/app_usage.db</code>，一天几百行。离开电脑 5 分钟不算，而且会把那段会话的结尾往回拨到最后一次操作的时间；锁屏、屏保、合盖睡眠都不计时。</p>
+<h3>页面</h3>
+<ul><li><strong>概览</strong>：窗口内总时长、macOS 应用排行、mk serve 应用排行。</li><li><strong>时段分布</strong>：星期 × 小时热力图，加 24 小时柱状图。</li><li><strong>趋势</strong>：每天的总时长，悬停看当天用得最多的应用。</li><li><strong>时间窗口</strong>：今天 / 7天 / 30天 / 全部，或自选起止日期。</li><li><strong>采集状态条</strong>：正在记录谁、最近一次采样、是否空闲；浏览器授权被拒、<code>lsappinfo</code> / <code>ioreg</code> 失败这类问题会直接显示出来，恢复后自动消失。</li></ul>
+<p>统计全部在后端算好，前端只负责画。和其他 mk serve 应用一样零依赖：Python 标准库加 macOS 自带命令。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
