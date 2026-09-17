@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>app-mk-macos-改进 — 发布说明 · dev-log</title>
+<link rel="stylesheet" href="../assets/site.css?v=b59d0316">
+</head>
+<body>
+<script id="case-meta" type="application/json">{"case_id": "CASE-2026-111", "title": "app-mk-macos-改进 — 发布说明", "updated": "2026-09-17T12:14:29-04:00", "change_type": "improve", "sort_key": "2026-09-17T12:14:29-04:00"}</script>
+<nav class="topnav"><a href="../index.html">&larr; 返回时间线</a></nav>
+<article class="case-page">
+<h1>app-mk-macos-改进 — 发布说明</h1>
+<p class="updated"><span class="entry-case-id">CASE-2026-111</span> · 更新: 2026-09-17T12:14:29-04:00</p>
+<p>1.0.0 发布当天就发现三处数字不准：用「安装为应用」打开的自建应用不进 mk serve 排行；离开电脑后不到 5 分钟就锁屏或进屏保，这几分钟还算在前一个应用头上；趋势页的自选日期把年份输错（比如 0202），后端会一口气补出几十万天。1.1.0 把这三处补上。</p>
+<h3>Chrome「安装为应用」窗口也算进 mk serve 排行</h3>
+<p>很多 mk serve 应用平时是从程序坞里的 Chrome 应用窗口打开的（mk_hub、健康配电盘……）。这类窗口在系统眼里是一个独立应用，bundle id 是 <code>com.google.Chrome.app.&lt;一串 id&gt;</code>，所以 1.0.0 只把它们记成 macOS 应用。</p>
+<p>现在前台是这类窗口时，app_usage 去 <code>~/Applications/Chrome Apps.localized/</code> 里找对应的 shim，读它 <code>Info.plist</code> 里记下的起始地址：是 <code>127.0.0.1</code> / <code>localhost</code> 加注册表里的端口，就记成对应的 mk serve 应用。</p>
+<ul><li><strong>不需要任何授权</strong>：只读 plist 文件，不调用 osascript，不会弹「想要控制 Chrome」的对话框。</li><li><strong>两边都计</strong>：macOS 应用排行里照样保留它自己的名字（如「mk_hub」），mk serve 排行里计入 <code>mk_hub</code>——和浏览器标签页「同时计在浏览器里」是同一个口径。概览页的说明改成了「已计入对应浏览器或 Chrome 应用窗口的时长」。</li><li><strong>地址不留存</strong>：起始地址只在读 plist 时比对一次，映射里只保留端口号，不进数据库、日志和接口。</li><li><strong>装了新的应用窗口不用重启</strong>：shim 有增删改，下一轮就重新读；没变化时不重复读。</li></ul>
+<h3>锁屏 / 屏保前的空闲不再计入</h3>
+<p>1.0.0 只在「连续 5 分钟没操作」时把会话结尾往回拨；如果不到 5 分钟屏保就启动了、或者自动锁屏了，这几分钟仍记在锁屏前的应用上。现在前台一变成锁屏界面或屏保，会话结尾同样回拨到最后一次键鼠操作的时间。手动按快捷键锁屏本身就是一次操作，所以差别主要出现在「放着不动、屏保自己启动」的时候。</p>
+<h3>趋势页日期跨度上限 3660 天</h3>
+<p><code>/api/daily</code> 按实际区间（只填开始日期时算到今天，只填结束日期时从最早的记录算起，「全部」也一样）计算跨度，超过 3660 天（约 10 年）直接返回 400。趋势页会显示「读取失败：日期跨度 N 天，超过趋势页上限 3660 天（约 10 年），请缩小时间窗口」，页面不再卡住；概览和时段分布不受影响，照常显示。</p>
+</article>
+<script src="../assets/site.js?v=1b820c76"></script>
+</body>
+</html>
